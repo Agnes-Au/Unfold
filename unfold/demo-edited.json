@@ -1,0 +1,967 @@
+{
+  "id": "demo-mv0ucpzz-wv",
+  "name": "Maya (Edited)",
+  "description": "Four weeks of diary notes and a social worker exchange, tracking Maya from overwhelm towards steadier ground.",
+  "persona": {
+    "name": "Maya",
+    "context": "Maya is studying business at a Hong Kong university. She has two younger siblings, Aidan and Lily. Her parents are often away working, so she handles school, caregiving, chores, and a busy social life."
+  },
+  "case": {
+    "id": "case_unfold_demo_demo-mv0ucpzz-wv",
+    "period": "Authored demo · four weeks",
+    "mainConcerns": "Maya was carrying a heavy credit load alongside caring for two younger siblings and most of the household chores while her parents worked away, and was struggling with a group project she found hard to manage. Sleep was broken, she blamed herself whenever anything slipped, and she described feeling close to breaking.",
+    "recentChange": "Across four weeks of contact Maya's sleep steadied and she began asking for help in small, specific ways, including a share of the chores for her brother and a renegotiated load with her parents. She now uses a pre-study routine and a breathing technique for exam nerves, questions her self-critical thoughts instead of accepting them, and treats a disappointing midterm result as a disappointment rather than a crisis.",
+    "language": "en",
+    "topics": [
+      "academic",
+      "family",
+      "sleep",
+      "friends"
+    ],
+    "createdDaysAgo": 2,
+    "createdTime": "10:00",
+    "claimedDaysAgo": 2,
+    "claimedTime": "13:00",
+    "continuedDaysAgo": 1,
+    "continuedTime": "18:30"
+  },
+  "notes": [
+    {
+      "id": "demo-mv0ucpzz-wv-note-01",
+      "daysAgo": 9,
+      "time": "20:01",
+      "text": "Since tomorrow's a day off, Ashley wants me to hang out with the girls. I'll also be grabbing dinner with my family and relatives later. Honestly, this semester's been super hectic. I took 20 credits to catch up, so I barely have any free time. I really wanted to just kick back and relax during the break, but I didn't wanna let the girls down and my parents definitely wouldn't let me skip dinner tonight. Looks like tomorrow's gonna be another busy day. I also have classes on Friday and a presentation to prep for, so I better start working on it now.",
+      "topics": [
+        "family",
+        "friends",
+        "academic"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-02",
+      "daysAgo": 9,
+      "time": "21:20",
+      "text": "Ugh! My little brother Aidan keeps bugging me for cash. Why does he blow through his allowance so fast? Bet he's just wasting it on his gacha games again. I don’t have time for this, I still gotta finish a ton of homework this week. I wish he’d just leave me alone. My siblings always come straight to me when they need something, like our parents aren’t even here. I'm so tired.",
+      "topics": [
+        "family"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-03",
+      "daysAgo": 8,
+      "time": "17:40",
+      "text": "It was cool catching up with the girls since we hadn’t seen each other since last year. Annie and Ashley are already dating, and Cherry looks like she’s having a blast at her new dance club. I know I should be happy for them, and I am, but all I could think about was how crappy my life feels compared to theirs. I’ve barely managed to keep up with school, let alone chase any kind of love life or hobbies. I was probably bringing the mood down with how dismissive I replied to them. I feel horrible about it, but I don't have time to dwell on this. Mom's already calling me, I have to get ready for dinner."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-04",
+      "daysAgo": 8,
+      "time": "21:24",
+      "text": "I love my relatives with all my heart, I really do. But why is it that every time we get together, they all just start judging my body and asking a million questions about my life? It’s like I’m on trial or something! Auntie Ming keeps going on about how I’m too skinny and keeps shoving food in my bowl. I get that she’s just trying to be sweet, and I should probably be thankful for how much my family cares, but honestly, I’ve already been feeling super insecure about how I look 'cause I don’t even have time to hit the gym, and I just don’t wanna deal with that right now. Oh, and I totally forgot, I still haven’t sorted out which part each of us are presenting for our group presentation tomorrow. Gotta go!"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-05",
+      "daysAgo": 8,
+      "time": "23:34",
+      "text": "This girl Fiona from my group project is getting on my nerves! She's always so passive aggressive with her messages. I think she's mad I’m texting about the presentation on a holiday, or maybe she's pissed she got stuck with the longest part. Not my fault though, it's literally tomorrow! Does she want us to just forget to divide parts and be all awkward tomorrow? Whatever, I’m going to sleep."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-06",
+      "daysAgo": 7,
+      "time": "10:30",
+      "text": "The presentation turned out so bad. Alex stuttered a bunch and took up way more time than he should, and Fiona left out a bunch of important details to move the presentation along. This is why I can't handle group projects with strangers. I just know this is gonna make the rest of my day awful."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-07",
+      "daysAgo": 6,
+      "time": "21:29",
+      "text": "I tried to do a mock paper to prepare for the midterm but the results were awful. I just can't recall the material, so I should find more time to study, but I don't have the time to fit even more studying into my schedule. Jason invited Alex, Fiona and I to watch a movie tonight to celebrate a so-called successful presentation, so I have to head out soon. That presentation was awful and I really don't want to show up, but I don't want to upset Jason and the others for no reason, so I guess I'm going."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-08",
+      "daysAgo": 5,
+      "time": "01:52",
+      "text": "Thank god it's Sunday, because that boring movie went on forever and I wouldn't have been able to wake up early for my 9 am Monday classes. Alex and Fiona didn't even show up. It was so awkward with Jason, we're not that close at all. There were so many awkward silences. I feel so stupid for going.",
+      "topics": [
+        "friends"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-09",
+      "daysAgo": 5,
+      "time": "12:30",
+      "text": "I finally woke up. I wish I didn't remember how embarrassing it was last night. Our parents are both out today so it's just me, Aidan and Lily. I have to cook lunch for all of us, and then mop and vacuum the floor. I wish those two lazy monkeys would lend me a hand sometimes, but I don't want to pressure Lily since her DSEs are coming up and Aidan's just a pain to even talk to."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-10",
+      "daysAgo": 5,
+      "time": "18:33",
+      "text": "I should have asked Aidan and Lily to help out after all. I still have so much on my plate. Looks like it'll be a late night again tonight.",
+      "topics": [
+        "sleep"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-11",
+      "daysAgo": 4,
+      "time": "07:30",
+      "text": "I slept okay tonight. Twisted and turned a lot, but I'm glad I went to bed at around 12 anyway. If I had really pulled an all-nighter like I'd planned, even coffee might not have been enough to get me through the day. Time to head to my 9 am class!"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-12",
+      "daysAgo": 4,
+      "time": "11:28",
+      "text": "I was so not looking forward to meeting Alex, Fiona and Jason in class today, but it went better than I expected. Those two apologized for not showing up and Jason also apologized for insisting on a late movie night. Despite usually being so unpleasant, Fiona actually pulled me aside and asked me if I was okay. Do I really look that disheveled? She even invited me to lunch after our classes. I don't like that she's being all pitiful of me. I don't know whether to go with her or not, so I said I'd text her."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-13",
+      "daysAgo": 4,
+      "time": "19:05",
+      "text": "My parents are out again. I'm too lazy to cook, so I just got takeout for the three of us. I still have to iron some clothes tonight. I wish my siblings were the type to actually listen to me and help me with household chores sometimes, but whatever. Oh, and lunch with Fiona actually wasn't too bad. She did ask me why I looked so tired but I didn't really want to share that much baggage with someone I don't even know that well, so I just glossed over it, but otherwise we just chatted normally. Fiona seemed to enjoy it and asked if we could eat together again sometime, which is really weird since I was sure she hated me with how passive aggressive her messages always were."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-14",
+      "daysAgo": 3,
+      "time": "22:23",
+      "text": "Almost forgot to leave a diary here. Parents were home today so I had less chores to deal with. They scolded Aidan for not helping out the house in the next room over, and it was honestly cathartic to hear."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-15",
+      "daysAgo": 3,
+      "time": "22:24",
+      "text": "Oh, I guess I should also talk about how horrible I slept last night. I was basically just staring at the ceiling the whole day. I barely got by thanks to lots of coffee, but I bet that caffeine is going to make it hard to sleep tonight. It's a never-ending cycle."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-16",
+      "daysAgo": 2,
+      "time": "23:02",
+      "text": "I did another mock paper. I did better today than on Sunday, but it was still pretty bad. It's hard to focus whenever I try to study. I find myself getting distracted and thinking about what I should eat later or how my friends or doing."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-17",
+      "daysAgo": -1,
+      "time": "10:42",
+      "text": "It's finally the weekend again! The week was so hectic I thought I was going to drown. I didn't have time to leave a note here at all. I barely managed to hand my assignments in on time, but new ones just keep coming. And we have another presentation due on Monday, with the same groupmates. I'm really annoyed I have to work with those people again, but it does feel like Fiona is being nicer than she did before, so that's a rare silver lining."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-18",
+      "daysAgo": -1,
+      "time": "15:20",
+      "text": "My parents are telling me to do housework again. I have to take out the trash and do the laundry. They always say that I can split the work with my siblings if it's too much, but they know how impossible that is. I can't do that to Lily, and Aidan just won't listen. So I end up taking on everything myself again. They're usually small tasks, but along with all the other stuff I have to do they become major annoyances."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-19",
+      "daysAgo": -1,
+      "time": "17:22",
+      "text": "I was about to work on another practice test for the upcoming midterms, but Lily came over, and we ended up having such a long chat. She's been having a tough time reaching her DSE goals and is worried she might not make it to university at all. She broke down crying. I tried my best to comfort her, but I think I might have missed the mark because she started calling me condescending, saying that since I’ve already gotten into university, I wouldn’t understand what she's going through. How am I supposed to ask for her help with housework after all that? And she couldn't imagine how much I understand the pains of academic stress. She doesn't even realize that I had planned to spend that time talking to her, actually studying. But if I mention that, she’ll probably say my exams don’t matter as much as hers, which is honestly true. Sometimes, I wonder why I even push myself so hard, but I simply can't afford to miss deadlines or slack off. It just feels too horrible to think about doing that. It’s all pretty overwhelming. I think I’ll lie down for a bit and maybe talk to the social worker again. Her advice really helped me last time."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-20",
+      "daysAgo": -2,
+      "time": "12:12",
+      "text": "Maybe it's the conversation I had with my sister last night, but I slept pretty well today. I did end up working later than I expected, so good thing it's Sunday. I'm going to meet with my group to talk about the presentation on Monday later. I'm a bit nervous about whether it'll go well."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-21",
+      "daysAgo": -2,
+      "time": "22:40",
+      "text": "Lily and I were doing a study session and we're on a 5 minute break right now. Let me see. The meeting this afternoon went on for quite long, but we got everything sorted. I thought all that sudden kindness from Fiona was just an act or a backhanded way to be mean, but she actually kept up that attitude today. I just texted her some final notes on the presentation, and even though she's usually especially curt when we message her later at night, she sent me a cute sticker in response, so I'm guessing she doesn't hate us anymore? I don't get her. Either way, I'm just glad it worked out. Somehow it made today's chores easier to get through as well. Though Aidan didn't even bat an eye when I was running around cleaning the floor in front of him. He was just lying on the sofa and playing his gacha games as usual. I honestly want to have a stern conversation with him. Maybe another day."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-22",
+      "daysAgo": -3,
+      "time": "11:30",
+      "text": "I'm actually in disbelief. The presentation went really well. The lecturer even complimented us, saying he could see how much work we put into researching and turning it into an engaging pitch. And speaking of that course, Fiona and I are getting lunch again today. Lots of unexpected things have been happening recently."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-23",
+      "daysAgo": -3,
+      "time": "15:15",
+      "text": "I was beginning to think today was the best day I'd had in a while, but I just discovered that I missed a deadline. I don't even know how it happened. I could've sworn I put that assignment in my to-do list, but it just wasn't there! And it was due this morning. I rushed through it and submitted it just now, but there'll still be a point deduction for being late. I'm still in shock over how I missed it. Maybe I was going to put it in my to-do list, but my parents or Aidan interrupted me and I forgot about it afterwards? It feels like they're always actively trying to sabotage my life. It's probably wrong of me to blame them, but I'm tired of saying how everything is always my fault to myself all the time."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-24",
+      "daysAgo": -4,
+      "time": "22:10",
+      "text": "Finally emailed my lecturer about submitting that assignment late. Dreaded it for two whole days and worked myself up over nothing. She just replied saying it's a tiny deduction and not to stress. All that worrying for literally nothing. At least I can finally breathe. Slept okay last night too, so I'll take it.",
+      "topics": [
+        "academic"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-25",
+      "daysAgo": -6,
+      "time": "21:50",
+      "text": "Tried that thing Miss Chan mentioned. I did a ten-minute brain dump before studying tonight. Wrote down everything stuck in my head: the mock paper, Aidan asking for cash, Lily, group project stuff. Then closed the notebook and actually got through a whole study section. My focus still drifted a bit, but I caught myself instead of just giving up to scroll Instagram. Small win, but after weeks of feeling scattered, I'll take it.",
+      "topics": [
+        "academic"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-26",
+      "daysAgo": -8,
+      "time": "20:30",
+      "text": "Lost my temper when Aidan asked for money again and brought up his gacha games. Shouldn't have snapped like that. Usually I'd stew about it for days, but I remembered what Miss Chan said about how I talk to myself. If Lily was in this mess, I'd tell her she's just exhausted. Went and said sorry to Aidan; he just shrugged it off like it was nothing. Also managed to get to bed before 12:30 four nights in a row and actually sleep. Don't want to jinx anything, but things feel a bit more manageable.",
+      "topics": [
+        "family",
+        "sleep"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-27",
+      "daysAgo": -9,
+      "time": "21:15",
+      "text": "Did chores today and actually asked Aidan to help instead of just keeping all the resentment bottled up. Just asked him to handle the bins every Tuesday. One small, specific thing like Miss Chan suggested. He grumbled on his way out but took them down. Then Lily helped with dinner without me even asking, which honestly almost made me tear up. My to-do list is still massive, but for once it doesn't feel impossible.",
+      "topics": [
+        "family"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-28",
+      "daysAgo": -11,
+      "time": "22:40",
+      "text": "Actually chatted with Ashley instead of just hearting her IG stories. We're meeting up to play badminton this Saturday. Didn't get that usual knot of comparison in my stomach either, just genuinely wanted to catch up. Finished a full mock paper tonight too and didn't hate my score. Not sure why things are clicking. Maybe the sleep, or maybe the notebook trick? Probably both.",
+      "topics": [
+        "friends",
+        "academic"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-29",
+      "daysAgo": -14,
+      "time": "23:05",
+      "text": "Had to present in tutorial today. Did that box breathing trick right before standing up. Four seconds in, hold, four out, until my hands stopped shaking so much. It actually worked, and the tutor said my part was clear. Later, Lily and I studied side by side for two hours, and she actually asked for help with her math homework instead of shutting me out. First time she's done that since we fought.",
+      "topics": [
+        "academic",
+        "family"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-30",
+      "daysAgo": -15,
+      "time": "19:20",
+      "text": "Badminton with Ashley was so good I didn't even check my phone once. We grabbed noodles after and she was talking about how stressed she's been too. Turns out she's just as swamped, she just doesn't post about it. Spent forever thinking everyone else had it figured out while I was drowning. Guess I was wrong. Walking home tonight, I actually felt light for the first time in ages.",
+      "topics": [
+        "friends"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-31",
+      "daysAgo": -16,
+      "time": "21:40",
+      "text": "Finally did the scary thing and talked to my parents after dinner about how unfair the chore split is. Practiced what I wanted to say in the shower like ten times so I wouldn't freeze up. Dad went quiet for a second and I thought it was going to blow up, but he just nodded. Aidan's taking over the bins and weekend laundry now, and Lily gets to focus on her DSE prep. No screaming. Keep waiting for something to go wrong, but so far, nothing.",
+      "topics": [
+        "family"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-32",
+      "daysAgo": -18,
+      "time": "22:20",
+      "text": "First midterm today. Did my breathing exercises in the hallway and used the grounding trick to stop panicking. The paper was brutal, but I didn't freeze up. Walking out, my first thought wasn't that I'd ruined everything, just that it was done and I needed to move on. Couldn't imagine thinking like that a month ago.",
+      "topics": [
+        "academic"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-33",
+      "daysAgo": -19,
+      "time": "23:10",
+      "text": "Second paper today and it definitely went worse. Felt that familiar self-critical voice creeping in on the walk home, telling me I didn't study enough and things are falling apart. Stopped myself and thought if I'd ever say that to Lily (definitely not). Told myself to chill, had a proper dinner instead of skipping it, and reviewed my notes for Friday. Exhausted, but not falling apart. Getting the hang of the difference.",
+      "topics": [
+        "academic",
+        "sleep"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-34",
+      "daysAgo": -21,
+      "time": "21:00",
+      "text": "Actually forced myself to do nothing tonight. Watched a drama with Lily, ate instant noodles, didn't look at a single study doc. Kept feeling guilty like I should be working, but reminded myself I don't have to earn rest by running myself into the ground. Miss Chan was right about that. Got another deadline coming up next week. I'm feeling a bit stressed, but just normal stress, not total panic.",
+      "topics": [
+        "family"
+      ]
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-note-35",
+      "daysAgo": -22,
+      "time": "20:45",
+      "text": "Re-read my old diary entries from earlier this month. The tone is so heavy! Everything felt like a total crisis and I thought everyone else had it so easy. Barely recognize myself back then. Life is still hectic, my midterm score wasn't amazing, and Aidan is still annoying. But I'm sleeping. I'm asking for help. I'm telling that harsh inner voice to quiet down. Miss Chan said I didn't have to figure everything out at once, and for once, I actually believe her.",
+      "topics": [
+        "academic",
+        "family",
+        "sleep",
+        "friends"
+      ]
+    }
+  ],
+  "messages": [
+    {
+      "id": "demo-mv0ucpzz-wv-message-01",
+      "sender": "student",
+      "daysAgo": 5,
+      "time": "18:50",
+      "text": "Hi, I'm Maya. I've been having a tough time balancing my academic and personal life, and I haven't been getting much sleep. I would love to have someone to talk to."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-02",
+      "sender": "worker",
+      "daysAgo": 5,
+      "time": "18:50",
+      "text": "Hi Maya, I'm Miss Chan. Thanks for reaching out, I'm glad you did. Sounds like school, home and sleep have all been a lot lately. What's been weighing on you most this week?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-03",
+      "sender": "student",
+      "daysAgo": 5,
+      "time": "18:52",
+      "text": "I'm not sure, I've just been feeling super overwhelmed. I feel like my academics and social life are all a mess, and dealing with my family isn't any easier."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-04",
+      "sender": "worker",
+      "daysAgo": 5,
+      "time": "18:52",
+      "text": "I understand, when everything piles up all at once, it’s tough to know where to begin. You don’t have to figure it all out today. Which part feels the most overwhelming right now, school, friends, or home?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-05",
+      "sender": "student",
+      "daysAgo": 5,
+      "time": "18:53",
+      "text": "I guess my studies. I know I've taken on too much this semester, but it's too late to regret it. I've always kept my GPA from 3.5-4.0 but I don't know how long I can keep this up. I feel like I'm finally starting to fall behind."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-06",
+      "sender": "worker",
+      "daysAgo": 5,
+      "time": "18:53",
+      "text": "It sounds like you've been holding yourself to really high standards for quite a while, and the fear of slipping up is wearing you down. You don’t need to regret taking on so much; instead, let’s figure out how to make the load more manageable. Let’s start with whatever’s due soonest and take it from there. Sounds good?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-07",
+      "sender": "student",
+      "daysAgo": 5,
+      "time": "18:53",
+      "text": "Yeah, I think it's good I have high standards for myself but sometimes living like this makes me feel fragile, like I'm going to break down at any moment. Honestly, I won't be able to sleep tonight anyway so I'm thinking about just doing as much as I can tonight and not going to bed. Maybe it'll make the coming days easier."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-08",
+      "sender": "worker",
+      "daysAgo": 5,
+      "time": "18:54",
+      "text": "That fragile feeling is your body letting you know it's running on empty. I understand why an all-nighter might seem helpful, but skipping sleep usually makes the next day tougher, not easier. Would you be willing to try one small thing tonight instead, like setting a stop time and winding down before bed?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-09",
+      "sender": "student",
+      "daysAgo": 5,
+      "time": "18:54",
+      "text": "Yeah, maybe you're right. I'll stop at 12 am. By winding down, you mean like doing yoga or something? I'm not really used to that. I usually just scroll a bit on Instagram to catch up with my friends before bed."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-10",
+      "sender": "worker",
+      "daysAgo": 5,
+      "time": "18:54",
+      "text": "12am sounds like a good idea. Winding down doesn’t have to mean yoga, it can just be putting your phone out of reach about 20 minutes before bed. And if you want to catch up with friends through your scroll, try setting a finish line before you turn off the lights."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-11",
+      "sender": "student",
+      "daysAgo": 5,
+      "time": "18:54",
+      "text": "Okay, got it. I'll get back to work and let you know how it goes tomorrow."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-12",
+      "sender": "worker",
+      "daysAgo": 5,
+      "time": "18:54",
+      "text": "Add oil and sleep well tonight!"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-13",
+      "sender": "student",
+      "daysAgo": 4,
+      "time": "11:32",
+      "text": "Miss Chan, thanks for encouraging me not to pull an all-nighter last night. I think I might have actually collapsed if I had. I just checked, and it looks like I marked the due date of one of my assignments as much earlier than it actually is, which means I have a little more time. I feel like the extra sleep made me a bit calmer."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-14",
+      "sender": "student",
+      "daysAgo": 4,
+      "time": "11:33",
+      "text": "I'd also like to ask for a little advice...a groupmate I wasn't really fond of showed some concern for me and asked me to grab lunch. I'm pretty surprised and honestly not sure how to respond. Do you think I should go or skip it?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-15",
+      "sender": "worker",
+      "daysAgo": 4,
+      "time": "12:00",
+      "text": "I'm really glad you slept, and it's worth noticing how much calmer you felt once the deadline turned out to be further off than you thought."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-16",
+      "sender": "worker",
+      "daysAgo": 4,
+      "time": "12:00",
+      "text": "It makes sense why you're hesitant to go. You don't owe her anything, but the class meetup already went better than you feared, so if you go you can keep it short and see how it feels."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-17",
+      "sender": "student",
+      "daysAgo": 4,
+      "time": "12:03",
+      "text": "Alright then, I think I'll go. Worst case scenario I can always leave early."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-18",
+      "sender": "worker",
+      "daysAgo": -1,
+      "time": "17:55",
+      "text": "Hi Maya, it's Miss Chan. It's been a few days, and I thought I'd do a quick check-in before things start to pile up. It also seems like quite a lot has happened in the past few days, so I'm here if you'd like to talk about it. How have you been doing?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-19",
+      "sender": "student",
+      "daysAgo": -1,
+      "time": "17:55",
+      "text": "Hi Miss Chan, I was just thinking about talking to you. You probably saw, but I just had an argument with my sister. She was worried about her academics, and I didn't know how to comfort her. I ended up upsetting her instead, and I'm also a little hurt by how she responded to me. It feels a bit like my own worries are being undermined. So I'm not feeling great."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-20",
+      "sender": "student",
+      "daysAgo": -1,
+      "time": "17:55",
+      "text": "Also, sorry for not adding notes very frequently, I know I should aim for daily diary entries but I end up forgetting sometimes with how hectic things get."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-21",
+      "sender": "worker",
+      "daysAgo": -1,
+      "time": "17:56",
+      "text": "It makes sense that you're hurt, and it sounds like two people who are both stretched thin ended up hurting each other. You don't need the perfect words to comfort your sister, and your own worries don't stop mattering just because hers feel louder right now. Also, the diary is for you, not homework, so no need to apologise when a busy week gets in the way."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-22",
+      "sender": "student",
+      "daysAgo": -1,
+      "time": "17:58",
+      "text": "Thanks for saying that. I thought about it for a while, and I think I want to apologize. Should I go talk to her?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-23",
+      "sender": "worker",
+      "daysAgo": -1,
+      "time": "17:58",
+      "text": "I think that it's worthwhile. It's great that you want to mend things. Just remember that apologising isn't the same as taking all the blame, since you were both hurting. Go gently, and it's all right if everything isn't perfect."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-24",
+      "sender": "student",
+      "daysAgo": -1,
+      "time": "18:10",
+      "text": "Miss Chan, I just talked to my sister. We had a proper heart-to-heart. She's sorry for taking her frustrations out on me, and I apologized for hurting her too. We talked about doing some study sessions together so we can cheer each other on. It went pretty well!"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-25",
+      "sender": "worker",
+      "daysAgo": -1,
+      "time": "18:10",
+      "text": "That's really lovely to hear, and you should be proud of how you handled it. Turning it into study sessions is a great idea, since you'll both have someone in your corner. Well done, and take the win tonight."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-26",
+      "sender": "student",
+      "daysAgo": -5,
+      "time": "19:38",
+      "text": "Miss Chan, are you around? I messed up and I've been giving myself a hard time about it for the last two days."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-27",
+      "sender": "worker",
+      "daysAgo": -5,
+      "time": "19:40",
+      "text": "Hi Maya, I'm here. Take your time. What happened?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-28",
+      "sender": "student",
+      "daysAgo": -5,
+      "time": "19:41",
+      "text": "I missed an assignment deadline. No idea how it happened, it just slipped off my list. Submitted it late today. Honestly, the point deduction isn't even what's bothering me; it's that I've spent 48 hours convincing myself I'm completely useless."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-29",
+      "sender": "worker",
+      "daysAgo": -5,
+      "time": "19:42",
+      "text": "That sounds exhausting. Spending two days talking to yourself like that must've been tough. If Lily missed a deadline, what would you tell her?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-30",
+      "sender": "student",
+      "daysAgo": -5,
+      "time": "19:43",
+      "text": "Well...probably that it's just one assignment, she's tired, and it doesn't make her a failure."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-31",
+      "sender": "worker",
+      "daysAgo": -5,
+      "time": "19:43",
+      "text": "So why does she get grace while you get the harsh treatment?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-32",
+      "sender": "student",
+      "daysAgo": -5,
+      "time": "19:44",
+      "text": "Because I should have my act together, I guess. Though when you say it like that, it sounds pretty harsh."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-33",
+      "sender": "worker",
+      "daysAgo": -5,
+      "time": "19:45",
+      "text": "It's just a deeply ingrained habit. This week, try catching that inner voice and replying to it the way you would to Lily, even just once a day. You don't have to magically stop having the thought, just stop treating it as absolute truth."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-34",
+      "sender": "student",
+      "daysAgo": -5,
+      "time": "19:46",
+      "text": "I can try that. Also, I've been struggling to focus when studying. I sit at my desk and my mind races. Food, my siblings, whether I'm falling behind."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-35",
+      "sender": "worker",
+      "daysAgo": -5,
+      "time": "19:47",
+      "text": "That happens a lot when your brain is overloaded. Try setting up a 'worry window'. Before studying, set a timer for ten minutes and dump every random thought onto paper. Once time's up, close the notebook and start working. It gives those thoughts a place to stay so they stop nagging you."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-36",
+      "sender": "student",
+      "daysAgo": -5,
+      "time": "19:48",
+      "text": "So I can just write 'I'm going to fail' and be done with it?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-37",
+      "sender": "worker",
+      "daysAgo": -5,
+      "time": "19:48",
+      "text": "Exactly. You aren't fixing them right then, just setting them aside for a bit. Test it out before your next study session and let me know how it goes."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-38",
+      "sender": "student",
+      "daysAgo": -5,
+      "time": "19:49",
+      "text": "I will. Thanks, Miss Chan. Just talking about it makes me feel a bit better."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-39",
+      "sender": "worker",
+      "daysAgo": -5,
+      "time": "19:50",
+      "text": "You're doing fine. Speak soon, Maya."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-40",
+      "sender": "worker",
+      "daysAgo": -10,
+      "time": "13:05",
+      "text": "Hi Maya, just checking in. How did the worry window and talking back to that inner voice go this week?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-41",
+      "sender": "student",
+      "daysAgo": -10,
+      "time": "13:20",
+      "text": "Actually went surprisingly well! Wrote everything down before studying and managed to focus for a whole block. Plus, I lost my temper with Aidan on Saturday, but instead of beating myself up for days, I just went and apologized that evening. Which is pretty much a first for me."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-42",
+      "sender": "worker",
+      "daysAgo": -10,
+      "time": "13:21",
+      "text": "That's a huge change. Not because you didn't snap, but because you didn't spend three days torturing yourself over it."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-43",
+      "sender": "student",
+      "daysAgo": -10,
+      "time": "13:22",
+      "text": "And I tried asking Aidan to take out the trash. Just that one specific thing. He groaned about it, but he actually did it. Saved me the trouble and made me feel a bit less buried."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-44",
+      "sender": "worker",
+      "daysAgo": -10,
+      "time": "13:23",
+      "text": "That's the ideal way to ask. Small, concrete, and specific to one person. Much easier for someone to respond to than a general complaint about how nobody helps out."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-45",
+      "sender": "student",
+      "daysAgo": -10,
+      "time": "13:24",
+      "text": "I'd like to ask for more help, but I'm worried about pushing my luck."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-46",
+      "sender": "worker",
+      "daysAgo": -10,
+      "time": "13:25",
+      "text": "No need to rush into everything at once. Stick to small requests. Also, Maya, I want you to plan one hour this week that's purely for yourself. No chores, no revision. Something you actually find fun."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-47",
+      "sender": "student",
+      "daysAgo": -10,
+      "time": "13:26",
+      "text": "That feels kind of self-indulgent."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-48",
+      "sender": "worker",
+      "daysAgo": -10,
+      "time": "13:26",
+      "text": "It's really not. You're constantly running on fumes. Take sixty minutes. If you had them, what would you do?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-49",
+      "sender": "student",
+      "daysAgo": -10,
+      "time": "13:27",
+      "text": "Play badminton, probably. Ashley's been asking me to join."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-50",
+      "sender": "worker",
+      "daysAgo": -10,
+      "time": "13:27",
+      "text": "Sounds like a plan. That's your assignment for now. Let me know how it goes."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-51",
+      "sender": "student",
+      "daysAgo": -13,
+      "time": "21:10",
+      "text": "Miss Chan, my midterms start next week and I'm already freaking out. Every time I imagine walking into the exam room, I get this tight feeling in my chest."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-52",
+      "sender": "worker",
+      "daysAgo": -13,
+      "time": "21:12",
+      "text": "That physical tightness is just your body bracing itself, even if it feels uncomfortable. Let's give you a quick tool to use right when you need it. Have you ever tried box breathing?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-53",
+      "sender": "student",
+      "daysAgo": -13,
+      "time": "21:12",
+      "text": "No, is that the breathing with counting?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-54",
+      "sender": "worker",
+      "daysAgo": -13,
+      "time": "21:13",
+      "text": "Inhale for four seconds, hold for four, exhale for four, hold for four. Do a few cycles before you go in. If your thoughts are still racing, pick three random objects around you and focus on them. It helps anchor you in the present."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-55",
+      "sender": "student",
+      "daysAgo": -13,
+      "time": "21:14",
+      "text": "Honestly, that sounds a bit too basic to actually help."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-56",
+      "sender": "worker",
+      "daysAgo": -13,
+      "time": "21:15",
+      "text": "Give it a shot right now. Four seconds in, hold, four out. I'll wait."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-57",
+      "sender": "student",
+      "daysAgo": -13,
+      "time": "21:16",
+      "text": "Oh... okay, that actually calmed me down a bit. My hands stopped shaking as much."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-58",
+      "sender": "worker",
+      "daysAgo": -13,
+      "time": "21:16",
+      "text": "Something being simple doesn't mean it's useless. Try using it in the hallway before your exam on Tuesday. And remember, you've studied hard. You're allowed to trust your preparation."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-59",
+      "sender": "student",
+      "daysAgo": -13,
+      "time": "21:17",
+      "text": "Thanks, Miss Chan. I'll do my best."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-60",
+      "sender": "worker",
+      "daysAgo": -17,
+      "time": "19:30",
+      "text": "How did your weekend go, Maya?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-61",
+      "sender": "student",
+      "daysAgo": -17,
+      "time": "19:33",
+      "text": "I actually did it. Talked to my parents and explained that doing all the housework alone is too much. I practiced my opening lines in the shower beforehand so I wouldn't freeze up."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-62",
+      "sender": "worker",
+      "daysAgo": -17,
+      "time": "19:34",
+      "text": "And how did it turn out?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-63",
+      "sender": "student",
+      "daysAgo": -17,
+      "time": "19:35",
+      "text": "Dad went silent for a second and I thought for sure he'd get mad. But he just nodded and said I should've spoken up sooner. Now Aidan has to handle the trash and weekend laundry. No arguments or shouting. I keep expecting some catch, but nothing happened."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-64",
+      "sender": "worker",
+      "daysAgo": -17,
+      "time": "19:36",
+      "text": "Look at the pattern here, Maya. You anticipated a total disaster, prepared yourself well, and the actual outcome turned out quite ordinary. This has happened with the deadline and the presentation too. Your anxiety isn't always a reliable predictor."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-65",
+      "sender": "student",
+      "daysAgo": -17,
+      "time": "19:38",
+      "text": "That's... really true. I spend so much time bracing for the worst when it usually turns out okay."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-66",
+      "sender": "worker",
+      "daysAgo": -17,
+      "time": "19:39",
+      "text": "Keep holding onto those examples. And definitely keep practicing what you want to say, it's working well. How are you feeling about the exam on Friday?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-67",
+      "sender": "student",
+      "daysAgo": -17,
+      "time": "19:40",
+      "text": "Still nervous, but just regular nervous. I've got my study plan sorted."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-68",
+      "sender": "student",
+      "daysAgo": -20,
+      "time": "20:15",
+      "text": "Miss Chan, got one of my midterm marks back. It's a B minus. I'm used to getting A's, so I'm pretty bummed."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-69",
+      "sender": "worker",
+      "daysAgo": -20,
+      "time": "20:17",
+      "text": "It's completely normal to feel disappointed. What's your inner voice telling you right now?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-70",
+      "sender": "student",
+      "daysAgo": -20,
+      "time": "20:18",
+      "text": "The usual stuff, that I'm slipping and everything's going downhill. But I caught myself, thought about what I'd say to Lily if she was in my shoes, and honestly realized it wasn't true."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-71",
+      "sender": "worker",
+      "daysAgo": -20,
+      "time": "20:19",
+      "text": "Think back to our first conversation. You told me you felt completely fragile, ready to snap, and planning to pull all-nighters because you thought resting wasn't an option."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-72",
+      "sender": "student",
+      "daysAgo": -20,
+      "time": "20:20",
+      "text": "That honestly feels like ages ago."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-73",
+      "sender": "worker",
+      "daysAgo": -20,
+      "time": "20:20",
+      "text": "It was only about three and a half weeks ago. You didn't get a B minus because you started resting. You got it while actually sleeping, delegating chores, and treating yourself with some kindness. Taking care of yourself isn't what hurt your grade; it's the reason this is just a minor disappointment instead of a total breakdown."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-74",
+      "sender": "student",
+      "daysAgo": -20,
+      "time": "20:22",
+      "text": "I think this is the first time a lower grade hasn't completely ruined my entire week."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-75",
+      "sender": "worker",
+      "daysAgo": -20,
+      "time": "20:23",
+      "text": "That's definitely worth holding onto. Keep up the bedtime wind-down, the worry windows, asking for help, and protecting your personal time. Rest isn't a reward you have to earn by burning out first, Maya."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-76",
+      "sender": "student",
+      "daysAgo": -20,
+      "time": "20:24",
+      "text": "I'll keep that in mind. Thank you so much for all your help this month."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-77",
+      "sender": "worker",
+      "daysAgo": -20,
+      "time": "20:25",
+      "text": "You're the one who put in the effort. I just helped guide the way. Go get some proper rest tonight."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-78",
+      "sender": "student",
+      "daysAgo": -22,
+      "time": "20:50",
+      "text": "Miss Chan, I just looked back at my diary entries from early October. Reading them back, everything felt so overwhelmingly heavy, like absolute chaos."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-79",
+      "sender": "worker",
+      "daysAgo": -22,
+      "time": "20:52",
+      "text": "How does reading those entries feel now?"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-80",
+      "sender": "student",
+      "daysAgo": -22,
+      "time": "20:53",
+      "text": "Like looking at someone who was drowning and didn't realize she was allowed to ask for help. Life is still busy, and my grades aren't perfect, but I'm sleeping. I'm asking for support. And I'm not listening to that harsh inner voice anymore."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-81",
+      "sender": "worker",
+      "daysAgo": -22,
+      "time": "20:55",
+      "text": "That's a huge list of changes. Keep holding onto that progress, especially when things feel tough. You know where to find me if you need."
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-82",
+      "sender": "student",
+      "daysAgo": -22,
+      "time": "20:56",
+      "text": "I do. Thanks for everything, Miss Chan. Happy Halloween!"
+    },
+    {
+      "id": "demo-mv0ucpzz-wv-message-83",
+      "sender": "worker",
+      "daysAgo": -22,
+      "time": "20:56",
+      "text": "Happy Halloween, Maya. Add oil."
+    }
+  ],
+  "daySummaries": [
+    {
+      "daysAgo": 9,
+      "text": "Maya wrote that the next day was a holiday, with plans to see friends and a dinner with family and relatives, and that she still had a presentation to prepare for. She also described her younger brother repeatedly asking her for money, and said she felt tired and short of time for her coursework."
+    },
+    {
+      "daysAgo": 8,
+      "text": "Maya reunited with her friends after a year, feeling her life compared poorly to theirs. She struggled at a family dinner due to relatives commenting on her weight and was unsure who would present each part of the group project. She also had tense messages with a group member about the presentation."
+    },
+    {
+      "daysAgo": 7,
+      "text": "Maya wrote that the group presentation did not go well, as one member stumbled and overran and another left out important details. She said she finds group projects with people she does not know difficult to manage, and expected the rest of the day to be poor."
+    },
+    {
+      "daysAgo": 6,
+      "text": "Maya tried a mock paper for her midterm, was unhappy with the result, and said she cannot recall the material but has no room in her schedule to study more. She also agreed to join classmates for a film that evening to mark the presentation, although she did not want to go."
+    },
+    {
+      "daysAgo": 5,
+      "text": "Maya had an awkward cinema night when two classmates didn’t show, and she felt uncomfortable with the one who was there. On Sunday, she cooked and cleaned for her siblings alone while their parents were out, wishing she had asked for help since she still had much to do and expected a late night."
+    },
+    {
+      "daysAgo": 4,
+      "text": "Maya slept better after going to bed around midnight and was glad she didn’t stay up all night. The class meeting with her group was smoother than expected; they apologized for missing the film, one asked if she was okay, and invited her to lunch. She went, feeling it went better than she feared, though she wasn’t sure how to interpret their sudden friendliness."
+    },
+    {
+      "daysAgo": 3,
+      "text": "Maya noted that her parents were home, so she had fewer chores, and that they scolded her brother for not helping around the house. She also wrote that she had slept badly the night before and relied on coffee to get through the day, and worried that the caffeine would make it hard to sleep again."
+    },
+    {
+      "daysAgo": 2,
+      "text": "Maya did another mock paper and said she did better than on Sunday but still found the result poor. She wrote that she finds it hard to concentrate when studying and gets distracted by thoughts of food and her friends."
+    },
+    {
+      "daysAgo": -1,
+      "text": "Maya said the week was hectic, and she’s behind on her diary. Another group presentation is due Monday, and she noted one classmate is friendlier. She’s doing all the housework alone instead of asking her siblings. Her sister broke down over exam worries, and Maya’s attempt to comfort her was poorly received, with Lily calling her condescending. Maya is considering talking to the social worker again."
+    },
+    {
+      "daysAgo": -4,
+      "text": "Maya emailed her lecturer about the late assignment and found the penalty was minor, after two days of anticipating the worst. She noted that she tends to build small problems up in her head, and described feeling tired but relieved, having slept reasonably well."
+    },
+    {
+      "daysAgo": -6,
+      "text": "Maya tried the pre-study routine agreed in her last exchange, writing down her worries for ten minutes before starting work. She said it helped her complete a whole section, that her attention still drifted but she was able to return to the task, and that she was no longer fighting her own thoughts as much."
+    },
+    {
+      "daysAgo": -8,
+      "text": "Maya lost her temper with her brother over money and said that, instead of staying angry for days, she reframed it by asking what she would say to her sister in the same situation, then apologised the same evening. She also noted four consecutive nights of better sleep and said she felt less overwhelmed."
+    },
+    {
+      "daysAgo": -9,
+      "text": "Maya did the household chores and, for the first time, made one specific request for help rather than resenting her brother silently; he complained but complied. Her sister helped with dinner unprompted. Maya said the workload was unchanged but felt less unmanageable."
+    },
+    {
+      "daysAgo": -11,
+      "text": "Maya reconnected with a friend by message and arranged to play badminton, and said she did not experience her usual comparisons this time. She also completed a full mock paper and was not dissatisfied with the result."
+    },
+    {
+      "daysAgo": -14,
+      "text": "Maya used a breathing technique before presenting in class and found it steadied her; her tutor described her section as clear. She and her sister then studied together for two hours, and her sister sought her help with a subject for the first time since their earlier argument."
+    },
+    {
+      "daysAgo": -15,
+      "text": "Maya spent the afternoon playing badminton and eating with a friend, and reported enjoying herself without checking her phone. She said her friend had difficulties of her own, and that she no longer assumed everyone else was coping better than she was."
+    },
+    {
+      "daysAgo": -16,
+      "text": "Maya raised the distribution of household chores with her parents after rehearsing what she wanted to say. They agreed her brother would take on the bins and the weekend laundry and that her sister would keep her study time, and no one argued. Maya said she was waiting for it to go wrong, but it had not."
+    },
+    {
+      "daysAgo": -18,
+      "text": "Maya sat her first midterm examination and used breathing and grounding techniques beforehand. She said the paper was difficult but she did not freeze, and that her first thought afterwards was relief rather than self-blame."
+    },
+    {
+      "daysAgo": -19,
+      "text": "Maya found her second midterm harder and noticed self-critical thoughts returning on the way home. She questioned them rather than accepting them, ate dinner instead of skipping it, and continued preparing for the next paper. She described herself as tired but not broken."
+    },
+    {
+      "daysAgo": -21,
+      "text": "Maya deliberately took an evening off, watching a drama with her sister and not studying. She noted that she still felt she should be working, and reminded herself that rest does not have to be earned. She described her nerves about the coming deadline as ordinary rather than overwhelming."
+    },
+    {
+      "daysAgo": -22,
+      "text": "Maya re-read her diary entries from the beginning of the month and said she barely recognised the person who wrote them. She acknowledged that her workload is still heavy and that her midterm result was not strong, but listed improved sleep, asking for help, and quieting self-critical thoughts as changes. She said she now believes she does not have to solve everything at once."
+    }
+  ],
+  "supportPrompt": ""
+}
