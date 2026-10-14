@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createApp } from './index.js';
@@ -5,6 +6,8 @@ import { createDb } from './db.js';
 import { loadConfig } from './config.js';
 import { FICTIONAL_DEMO_CASE_ID, FICTIONAL_DEMO_DEVICE_ID } from './fictional-demo.js';
 import { newId, signWorkerToken } from './auth.js';
+
+const FIXTURE = JSON.parse(readFileSync(new URL('../demo-edited.json', import.meta.url), 'utf8'));
 
 const TEST_CONFIG = {
   jwtSecret: 'fictional-demo-test-secret',
@@ -46,7 +49,7 @@ test('fictional demo is complete, correlated, idempotent, and retains normal wor
     const first = await request(baseUrl, '/api/demo/session');
     assert.equal(first.status, 200);
     assert.equal(first.body.persona.name, 'Maya');
-    assert.equal(first.body.entries.length, 18);
+    assert.equal(first.body.entries.length, FIXTURE.notes.length);
     assert.equal(first.body.case.id, FICTIONAL_DEMO_CASE_ID);
     assert.equal(first.body.case.status, 'continued');
     assert.equal(first.body.case.summary.excerpts.length, first.body.entries.length);
@@ -62,9 +65,12 @@ test('fictional demo is complete, correlated, idempotent, and retains normal wor
       assert.equal(entry.transcript, excerpt.text);
       assert.equal(entry.audioUri, undefined);
     }
-    const retrospective = first.body.entries.find((entry) => entry.id === 'maya-note-12');
-    assert.notEqual(retrospective.createdAt, retrospective.eventAt);
-    assert.equal(db.prepare('SELECT cloud_org FROM devices WHERE id = ?').get(FICTIONAL_DEMO_DEVICE_ID).cloud_org, 0);
+    // Notes written about an earlier moment keep a separate event time.
+    for (const note of FIXTURE.notes.filter((item) => item.eventDaysAgo !== undefined)) {
+      const retrospective = first.body.entries.find((entry) => entry.id === note.id);
+      assert.notEqual(retrospective.createdAt, retrospective.eventAt);
+    }
+    assert.equal(db.prepare('SELECT cloud_org FROM devices WHERE id = ?').get(FICTIONAL_DEMO_DEVICE_ID).cloud_org, 1);
     assert.equal(db.prepare('SELECT COUNT(*) AS n FROM cases').get().n, 1);
 
     const login = await request(baseUrl, '/api/workers/login', {
@@ -79,13 +85,13 @@ test('fictional demo is complete, correlated, idempotent, and retains normal wor
 
     const detail = await request(baseUrl, `/api/worker/cases/${FICTIONAL_DEMO_CASE_ID}`, { token: workerToken });
     assert.equal(detail.status, 200);
-    assert.equal(detail.body.case.excerpts.length, 18);
+    assert.equal(detail.body.case.excerpts.length, FIXTURE.notes.length);
     assert.deepEqual(detail.body.case.excerpts.map((excerpt) => excerpt.id), entryIds);
     assert.equal(detail.body.case.device_id, undefined);
     assert.equal(detail.body.case.deviceToken, undefined);
     assert.equal(detail.body.case.excerpts[0].text, first.body.entries[0].deidentified);
     const thread = await request(baseUrl, `/api/worker/cases/${FICTIONAL_DEMO_CASE_ID}/messages`, { token: workerToken });
-    assert.equal(thread.body.messages.length, 4);
+    assert.equal(thread.body.messages.length, FIXTURE.messages.length);
 
     // An unassigned verified worker cannot see the full history.
     const otherId = newId();
@@ -111,10 +117,10 @@ test('fictional demo is complete, correlated, idempotent, and retains normal wor
     assert.equal(workerReply.status, 201);
     const second = await request(baseUrl, '/api/demo/session');
     assert.equal(second.body.deviceToken, first.body.deviceToken);
-    assert.equal(second.body.entries.length, 18);
+    assert.equal(second.body.entries.length, FIXTURE.notes.length);
     assert.equal(db.prepare('SELECT COUNT(*) AS n FROM cases').get().n, 1);
     const refreshedThread = await request(baseUrl, `/api/worker/cases/${FICTIONAL_DEMO_CASE_ID}/messages`, { token: workerToken });
-    assert.equal(refreshedThread.body.messages.length, 6);
+    assert.equal(refreshedThread.body.messages.length, FIXTURE.messages.length + 2);
 
     // The regular withdraw route clears the shared snapshot and conversation;
     // bootstrap/re-entry must not silently restore either.

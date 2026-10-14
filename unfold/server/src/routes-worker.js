@@ -256,7 +256,8 @@ export function workerRouter(db, config) {
        VALUES (?, ?, 'worker', ?, ?, ?)`
     ).run(messageId, row.id, req.worker.id, text.trim().slice(0, MAX_WORKER_MESSAGE_CHARS), now);
     db.prepare(
-      `UPDATE cases SET status = 'replied', responded_at = ?, updated_at = ? WHERE id = ?`
+      // responded_at is the FIRST response; later replies keep it (rematch resets it).
+      `UPDATE cases SET status = 'replied', responded_at = COALESCE(responded_at, ?), updated_at = ? WHERE id = ?`
     ).run(now, now, row.id);
 
     const message = db.prepare(`${MESSAGES_SELECT} WHERE m.id = ?`).get(messageId);

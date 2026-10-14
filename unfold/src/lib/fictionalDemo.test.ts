@@ -57,7 +57,7 @@ test('fictional student data stays separate from personal storage and remains co
   assert.equal(first.entries.length, 18);
   assert.equal(first.cases.length, 1);
   assert.equal(first.messages.length, 2);
-  assert.equal(first.cloudOrg, false);
+  assert.equal(first.cloudOrg, true);
   assert.equal(first.deviceToken, 'fictional-device-token-only');
   for (const [index, entry] of first.entries.entries()) {
     assert.equal(entry.id, session.case.summary.excerpts[index].id);

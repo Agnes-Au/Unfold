@@ -40,9 +40,16 @@ function buildHistory(now) {
 /**
  * Create only the namespaced fictional device, case, and messages. Existing
  * demo rows are never reset, so replies and withdrawals survive re-entry.
+ *
+ * The demo device has cloud organisation on, so the student app uploads
+ * Maya's fixture notes through the ordinary sync route and the server-side
+ * features (themes, summaries, Ask, analysis) run on them. Visitors' own notes
+ * are never synced to this shared device (enforced in the client store).
  */
 export function ensureFictionalDemo(db) {
   seed(db);
+  // Databases created before the demo had cloud organisation keep their device row.
+  db.prepare('UPDATE devices SET cloud_org = 1 WHERE id = ? AND cloud_org = 0').run(FICTIONAL_DEMO_DEVICE_ID);
   const existingCase = db.prepare('SELECT * FROM cases WHERE id = ?').get(FICTIONAL_DEMO_CASE_ID);
   if (existingCase) return;
 
@@ -59,7 +66,7 @@ export function ensureFictionalDemo(db) {
   const insert = db.transaction(() => {
     const existingDevice = db.prepare('SELECT id FROM devices WHERE id = ?').get(FICTIONAL_DEMO_DEVICE_ID);
     if (!existingDevice) {
-      db.prepare('INSERT INTO devices (id, token, cloud_org, created_at) VALUES (?, ?, 0, ?)').run(
+      db.prepare('INSERT INTO devices (id, token, cloud_org, created_at) VALUES (?, ?, 1, ?)').run(
         FICTIONAL_DEMO_DEVICE_ID,
         token,
         createdAt,

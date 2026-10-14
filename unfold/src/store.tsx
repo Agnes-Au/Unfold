@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import {
+  ApiError,
   caseTopics,
   createCase,
   deleteCloudEntries,
@@ -16,11 +17,13 @@ import {
   toSyncPayload,
   transitionCase,
   type BriefResponseKind,
+  type FictionalDemoSession,
   type SyncResult,
 } from './api';
 import { annotateEntry, buildDraft, shouldOfferSupport } from './lib/organise';
 import {
   buildFictionalDemoData,
+  fictionalDemoEntries,
   FICTIONAL_DEMO_ACTIVE_KEY,
   FICTIONAL_DEMO_STORAGE_KEY,
   PERSONAL_STORAGE_KEY,
@@ -134,9 +137,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       .then(([personalRaw, demoActive, demoRaw]) => {
         if (!active) return;
         if (demoActive === '1' && demoRaw) {
-          sessionGuard.activate(true);
+          const scope = sessionGuard.activate(true);
           setData(sanitize(JSON.parse(demoRaw)));
           setIsDemo(true);
+          void resyncDemoSession(scope);
         } else if (personalRaw) {
           setData(sanitize(JSON.parse(personalRaw)));
         }
@@ -180,6 +184,55 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     () => [...data.cases].reverse().find((item) => item.status !== 'withdrawn') ?? null,
     [data.cases],
   );
+
+  /**
+   * Refresh a restored demo session from the server. The stored demo device
+   * token is only valid for the database that issued it, so after a server
+   * reset the saved one is rejected; take the current token, case and
+   * messages instead. Offline: keep the stored demo state.
+   */
+  async function resyncDemoSession(scope: SessionScope) {
+    try {
+      const session = await getFictionalDemoSession();
+      if (!sessionGuard.isCurrent(scope)) return;
+      const { messages } = await getCaseMessages(session.deviceToken, session.case.id);
+      update((current) => buildFictionalDemoData(session, messages, current), scope);
+      syncDemoFixture(session, scope);
+    } catch {
+      // Server unreachable or demo mode off: keep the stored demo state.
+    }
+  }
+
+  /**
+   * Upload Maya's fixture notes to the demo device so cloud organisation has
+   * them. Unchanged notes are skipped server-side, so only the first visitor
+   * after a reset pays for classification.
+   */
+  function syncDemoFixture(session: FictionalDemoSession, scope: SessionScope) {
+    backfillCloud(fictionalDemoEntries(session), session.deviceToken, scope);
+  }
+
+  /**
+   * Call the server with this install's device token. If the server no longer
+   * recognises the token (e.g. its database was reset), register the install
+   * again and retry once with the new token.
+   */
+  async function withDeviceToken<T>(
+    current: Persisted,
+    scope: SessionScope,
+    call: (token: string) => Promise<T>,
+  ): Promise<T | null> {
+    const token = await ensureDeviceToken(current, scope);
+    if (!token) return null;
+    try {
+      return await call(token);
+    } catch (error) {
+      if (!(error instanceof ApiError) || error.code !== 'invalid_device_token' || !sessionGuard.isCurrent(scope)) throw error;
+      const fresh = await ensureDeviceToken({ ...current, deviceToken: null }, scope);
+      if (!fresh) throw error;
+      return call(fresh);
+    }
+  }
 
   /**
    * Lazily register this install with the server and return the device token.
@@ -231,6 +284,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
    * the local entry. Offline/failure silently keeps the local rules.
    */
   function syncEntryToCloud(entry: Entry, scope: SessionScope) {
+    // The demo device is shared by every visitor: their own notes stay local.
+    if (scope.isDemo) return;
     if (!data.cloudOrg || !data.deviceToken || !sessionGuard.isCurrent(scope)) return;
     const token = data.deviceToken;
     syncEntries(token, [toSyncPayload(entry)])
@@ -280,13 +335,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       completeOnboarding: () => scopedUpdate((current) => ({ ...current, onboarded: true })),
       setCloudOrg: async (next) => {
         if (isDemo || !scope) return false;
-        const token = await ensureDeviceToken(data, scope);
-        if (!token || !sessionGuard.isCurrent(scope)) return false;
         try {
           // Turning the consent off also asks the server to purge every cloud
           // copy of this device's entries (contract: purgeCloud only with off).
-          const result = await setCloudConsent(token, next, next ? undefined : { purgeCloud: true });
-          if (!sessionGuard.isCurrent(scope)) return false;
+          let token = '';
+          const result = await withDeviceToken(data, scope, (current) => {
+            token = current;
+            return setCloudConsent(current, next, next ? undefined : { purgeCloud: true });
+          });
+          if (!result || !sessionGuard.isCurrent(scope)) return false;
           scopedUpdate((current) => ({ ...current, cloudOrg: Boolean(result.cloudOrg) }));
           // Turning it on backfills existing local notes (deidentified text only).
           if (result.cloudOrg && data.entries.length > 0) backfillCloud(data.entries, token, scope);
@@ -321,7 +378,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         const target = data.entries.find((entry) => entry.id === id);
         // Propagate the delete to the cloud copy, but only for entries known
         // to have synced. Failure is logged and never blocks the local delete.
-        if (target?.synced && data.cloudOrg && data.deviceToken && scope && sessionGuard.isCurrent(scope)) {
+        if (target?.synced && data.cloudOrg && data.deviceToken && scope && !scope.isDemo && sessionGuard.isCurrent(scope)) {
           void deleteCloudEntry(data.deviceToken, id).catch((error) =>
             console.warn('[unfold] cloud delete failed for entry', id, error),
           );
@@ -377,9 +434,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
             return transitionIsCurrent();
           });
           if (!activated || !transitionIsCurrent()) return false;
-          sessionGuard.activate(true);
+          const demoScope = sessionGuard.activate(true);
           setData(next);
           setIsDemo(true);
+          syncDemoFixture(session, demoScope);
           return true;
         } catch {
           if (transitionIsCurrent()) {
@@ -429,8 +487,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       clearAll: () => {
         if (!scope || !sessionGuard.isCurrent(scope)) return;
         // "Delete everything" also deletes every cloud copy of this device's
-        // entries. Failure is logged and never blocks the local wipe.
-        if (data.cloudOrg && data.deviceToken) {
+        // entries (never the shared demo device's). Failure is logged and
+        // never blocks the local wipe.
+        if (data.cloudOrg && data.deviceToken && !isDemo) {
           void deleteCloudEntries(data.deviceToken).catch((error) =>
             console.warn('[unfold] cloud delete-all failed', error),
           );
@@ -466,7 +525,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         const draft = data.draft;
         let id = uid();
         let remote = false;
-        if (data.cloudOrg && data.deviceToken) {
+        // In the demo a new summary stays local so it can't replace Maya's shared case.
+        if (data.cloudOrg && data.deviceToken && !isDemo) {
           try {
             const created = await createCase(data.deviceToken, {
               mainConcerns: draft.mainConcerns,
@@ -532,8 +592,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
               };
             }),
           }));
-        } catch {
-          // Offline: keep the last known local state.
+        } catch (error) {
+          // A rejected demo token means the server was reset; take the current one.
+          if (isDemo && error instanceof ApiError && error.code === 'invalid_device_token') void resyncDemoSession(scope);
+          // Otherwise offline: keep the last known local state.
         }
       },
       withdrawCase: (id) => {

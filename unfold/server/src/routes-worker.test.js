@@ -354,6 +354,16 @@ test('respond allowed again when status becomes continued (student replied)', as
   assert.equal(getCase(caseId).status, 'replied');
 });
 
+test('a later reply keeps the first response time', async () => {
+  const w = insertWorker({});
+  const firstResponse = hoursAgo(30);
+  const caseId = insertCase({ status: 'continued', claimedBy: w.id, claimedAt: hoursAgo(40), respondedAt: firstResponse });
+  const res = await api(`/api/worker/cases/${caseId}/respond`, { method: 'POST', body: { text: 'follow-up' }, token: w.token });
+  assert.equal(res.status, 201);
+  assert.equal(getCase(caseId).responded_at, firstResponse);
+  assert.equal(res.body.case.responded_at, firstResponse);
+});
+
 test('respond stores worker messages truncated to 1000 chars (MAX_WORKER_MESSAGE_CHARS)', async () => {
   const w = insertWorker({});
   const caseId = insertCase({ status: 'claimed', claimedBy: w.id, claimedAt: hoursAgo(0.5) });

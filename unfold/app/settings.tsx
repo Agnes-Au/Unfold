@@ -65,7 +65,7 @@ export default function SettingsScreen() {
         </T>
         {store.isDemo ? (
           <T size={14} color={colors.muted} style={{ marginTop: 8 }}>
-            This isolated fictional session does not sync notes. Cloud organisation is unavailable here; exiting restores your personal settings unchanged.
+            Cloud organisation is on for this fictional session, so Maya’s notes are organised on the Unfold server. Notes you add or change here stay on this device and are never synced. Exiting restores your personal settings unchanged.
           </T>
         ) : null}
         {cloudError ? (
