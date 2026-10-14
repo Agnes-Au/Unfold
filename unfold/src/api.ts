@@ -18,7 +18,11 @@ import type { AttributeId, CaseStatus, Draft, Entry, TokenKind, TopicId } from '
  * disclose that the output is not GenAI.
  */
 
-export const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8787';
+// A trailing slash is dropped, so EXPO_PUBLIC_API_URL=/ means "same origin as the web app".
+export const API_BASE_URL = (process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8787').replace(/\/+$/, '');
+
+/** Where the social-worker console lives; the deployed build serves it at /worker/. */
+export const WORKER_CONSOLE_URL = process.env.EXPO_PUBLIC_WORKER_URL ?? 'http://localhost:5173';
 
 const TIMEOUT_MS = 8000;
 

@@ -3,7 +3,7 @@ import { newDeviceToken } from './auth.js';
 import { seed } from './seed.js';
 
 const FIXTURE = JSON.parse(
-  readFileSync(new URL('../../demo-edited.json', import.meta.url), 'utf8'),
+  readFileSync(new URL('../demo-edited.json', import.meta.url), 'utf8'),
 );
 
 export const FICTIONAL_DEMO_DEVICE_ID = 'dev_unfold_fictional_maya_v1';

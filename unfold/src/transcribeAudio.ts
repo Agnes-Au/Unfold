@@ -1,11 +1,10 @@
 import { File } from 'expo-file-system';
 import { Platform } from 'react-native';
+import { API_BASE_URL } from './api';
 import { readTranscript } from './lib/transcriptText';
 
-const ENDPOINT = 'https://api.elevenlabs.io/v1/speech-to-text';
-const MODEL = 'scribe_v2';
-// Inlined into the client bundle, so it is extractable from any build. See the README before shipping.
-const API_KEY = process.env.EXPO_PUBLIC_ELEVENLABS_API_KEY ?? '';
+// The Unfold server relays the recording to ElevenLabs Scribe v2 and keeps the key private.
+const ENDPOINT = `${API_BASE_URL}/api/transcribe`;
 
 export type TranscribePhase = 'preparing' | 'transcribing';
 
@@ -27,18 +26,15 @@ async function appendAudio(form: FormData, uri: string) {
 
 export async function transcribeRecording(audioUri: string, onPhase?: (phase: TranscribePhase) => void): Promise<string> {
   if (!audioUri) return '';
-  if (!API_KEY) throw new Error('EXPO_PUBLIC_ELEVENLABS_API_KEY is not set');
   onPhase?.('preparing');
   const form = new FormData();
-  form.append('model_id', MODEL);
-  form.append('tag_audio_events', 'false');
   await appendAudio(form, audioUri);
   onPhase?.('transcribing');
   const response = await fetch(ENDPOINT, {
     method: 'POST',
-    headers: { 'xi-api-key': API_KEY },
     body: form,
   });
+  if (response.status === 503) throw new Error('Voice transcription is not set up on the server (ELEVENLABS_API_KEY)');
   if (!response.ok) {
     const detail = await response.text().catch(() => '');
     throw new Error(`Transcription failed (${response.status}): ${detail}`);

@@ -59,8 +59,9 @@ export async function api(path, { method = 'GET', body, signal } = {}) {
     setToken(null);
     const isAuthEndpoint =
       path.startsWith('/workers/login') || path.startsWith('/workers/register');
-    if (!isAuthEndpoint && window.location.pathname !== '/login') {
-      window.location.assign('/login');
+    const loginPath = `${import.meta.env.BASE_URL}login`;
+    if (!isAuthEndpoint && window.location.pathname !== loginPath) {
+      window.location.assign(loginPath);
     }
     throw new ApiError(401, data);
   }

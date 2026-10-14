@@ -1,0 +1,15 @@
+{
+  "name": "Unfold",
+  "private": true,
+  "description": "Deployable demo: one Node server for the API, the student web app (/) and the social-worker console (/worker/).",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "npm run build:server && npm run build:worker && npm run build:student",
+    "build:server": "npm ci --prefix unfold/server --omit=dev",
+    "build:worker": "npm ci --prefix unfold/worker-web --include=dev && npm run build --prefix unfold/worker-web",
+    "build:student": "npm ci --prefix unfold --include=dev && cd unfold && EXPO_PUBLIC_API_URL=/ EXPO_PUBLIC_WORKER_URL=/worker/ npx expo export --platform web",
+    "start": "npm start --prefix unfold/server"
+  }
+}

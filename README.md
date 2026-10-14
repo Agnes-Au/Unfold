@@ -7,7 +7,7 @@ A private voice diary for students. Record on your phone, then decide whether a 
 **Student app (`unfold/`)**
 
 - Record voice notes on your phone; audio and transcripts stay on-device
-- Transcribe recordings with ElevenLabs Scribe v2
+- Transcribe recordings with ElevenLabs Scribe v2, relayed through the Unfold server so the key stays private
 - De-identify text on-device before anything leaves: names, schools, addresses, phones, emails — in English and Chinese
 - Organise notes with topics, attributes, daily summaries and "Ask your diary"
 - Optional cloud organisation (separate consent in Settings): only de-identified text syncs to the server
@@ -91,6 +91,8 @@ The server loads settings from `unfold/server/.env` (see `.env.example`):
 - `PORT` defaults to `8787`; `DB_PATH` defaults to `./unfold.db`.
 - `JWT_SECRET` must be replaced with a strong, private value outside local development; do not use the example value in production.
 - `GEMINI_API_KEY` is optional. If unset, GenAI features use deterministic fallbacks. Keep this key in the server `.env` only—never put it in the Expo app or worker console.
+- `ELEVENLABS_API_KEY` enables voice transcription (Scribe v2) through `POST /api/transcribe`. If unset, the app reports that transcription is not set up and typed notes still work.
+- `DEMO_MODE=1` mounts the fictional demo and seeds the demo worker and Maya's case at boot.
 
 For local testing, the seeded verified account is `demo.worker@unfold.local` / `demo1234`; the unverified account is `new.worker@unfold.local` / `demo1234`.
 
@@ -116,10 +118,10 @@ Edit `.env.local`:
 
 ```dotenv
 EXPO_PUBLIC_API_URL=http://localhost:8787
-EXPO_PUBLIC_ELEVENLABS_API_KEY=your_key_here
+EXPO_PUBLIC_WORKER_URL=http://localhost:5173
 ```
 
-The API URL defaults to `http://localhost:8787`. When using Expo Go on a physical phone, set it to your computer's LAN address instead (for example, `http://192.168.1.10:8787`). The ElevenLabs key is needed for voice transcription; get one from [ElevenLabs](https://elevenlabs.io/) for Scribe v2. Restart Expo after changing environment variables.
+The API URL defaults to `http://localhost:8787`. When using Expo Go on a physical phone, set it to your computer's LAN address instead (for example, `http://192.168.1.10:8787`). Voice transcription needs `ELEVENLABS_API_KEY` in the **server** `.env`; get one from [ElevenLabs](https://elevenlabs.io/) for Scribe v2. Restart Expo after changing environment variables.
 
 Choose how to run the app:
 
@@ -130,7 +132,30 @@ npm run ios     # launch iOS simulator
 npm run android # launch Android emulator
 ```
 
-Recordings are sent to ElevenLabs for transcription; audio and transcripts remain on-device. The ElevenLabs key is bundled into the development app, so use a restricted key with a low usage limit. Do not ship a public build with this setup; production transcription should go through a backend that keeps the key private.
+Recordings are sent through the Unfold server to ElevenLabs for transcription; the server holds the audio in memory for that request only and does not store it. Saved audio and transcripts remain on-device. `/api/transcribe` is unauthenticated, so anyone who can reach the server can spend ElevenLabs credit; use a key with a low usage limit.
+
+## Deploy a demo
+
+The whole project deploys as **one Node service**: the server answers `/api`, serves the student web app at `/` and the social-worker console at `/worker/`. Use a host that runs a long-lived Node process with a persistent disk (for example Render, Railway or Fly.io); serverless functions will not work because the server keeps a SQLite file and runs a background sweeper.
+
+From the repository root:
+
+- **Build command:** `npm run build` — installs the three packages, builds the worker console, and exports the student web app with same-origin URLs.
+- **Start command:** `npm start`
+
+Set these server environment variables:
+
+| Variable | Value |
+| --- | --- |
+| `DEMO_MODE` | `1` — enables Maya's fictional demo and seeds the demo worker at boot |
+| `JWT_SECRET` | a long random string |
+| `DB_PATH` | a file on the persistent disk, e.g. `/data/unfold.db` (the folder is created if missing) |
+| `GEMINI_API_KEY` | optional; GenAI features fall back to deterministic rules without it |
+| `ELEVENLABS_API_KEY` | optional; voice transcription is unavailable without it |
+
+The host's `PORT` is picked up automatically. The worker console login page shows the demo account (`demo.worker@unfold.local` / `demo1234`) whenever the server runs in demo mode.
+
+Demo caveats: every visitor shares the same fictional Maya device and case, so messages and withdrawals are visible to everyone and persist until the database is reset. New worker registrations stay unverified because there is no verification route; use the demo account. This deploys the web app only; phone builds need EAS.
 
 ## Tests
 

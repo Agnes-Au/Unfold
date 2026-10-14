@@ -134,7 +134,7 @@ echo "  Social-worker app:   http://localhost:5173"
 echo "  API health:          $SERVER_URL/api/health"
 echo "  Demo worker login:   demo.worker@unfold.local / demo1234"
 echo
-echo "Voice transcription requires EXPO_PUBLIC_ELEVENLABS_API_KEY in unfold/.env.local."
+echo "Voice transcription requires ELEVENLABS_API_KEY in unfold/server/.env."
 echo "For Expo Go on a physical phone, set EXPO_PUBLIC_API_URL to your computer's LAN IP and restart this script."
 echo "Press Ctrl-C to stop."
 

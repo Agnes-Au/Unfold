@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth.jsx';
+
+const DEMO_EMAIL = 'demo.worker@unfold.local';
+const DEMO_PASSWORD = 'demo1234';
 
 export default function Login() {
   const { login } = useAuth();
@@ -9,6 +12,21 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [demoMode, setDemoMode] = useState(false);
+
+  // The seeded demo account only exists when the server runs in demo mode.
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`/api/health`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((health) => {
+        if (!cancelled && health?.demoMode) setDemoMode(true);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -33,6 +51,26 @@ export default function Login() {
       <form className="card auth-card" onSubmit={onSubmit}>
         <h1>Sign in</h1>
         <p className="muted">Unfold Social Worker Console</p>
+
+        {demoMode && (
+          <div className="alert alert-info">
+            <strong>Demo account</strong>
+            <br />
+            Email: <code>{DEMO_EMAIL}</code>
+            <br />
+            Password: <code>{DEMO_PASSWORD}</code>
+            <button
+              type="button"
+              className="btn btn-secondary demo-fill"
+              onClick={() => {
+                setEmail(DEMO_EMAIL);
+                setPassword(DEMO_PASSWORD);
+              }}
+            >
+              Fill in demo account
+            </button>
+          </div>
+        )}
 
         {error && <div className="alert alert-error">{error}</div>}
 

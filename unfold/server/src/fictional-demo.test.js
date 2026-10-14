@@ -133,10 +133,11 @@ test('fictional demo is complete, correlated, idempotent, and retains normal wor
   });
 });
 
-test('fictional demo requires opt-in and is disabled in production configuration', () => {
+test('fictional demo requires explicit opt-in in every environment', () => {
   assert.equal(loadConfig({ DEMO_MODE: '1', NODE_ENV: 'development' }).demoMode, true);
-  assert.equal(loadConfig({ DEMO_MODE: '1', NODE_ENV: 'production' }).demoMode, false);
+  assert.equal(loadConfig({ DEMO_MODE: '1', NODE_ENV: 'production' }).demoMode, true);
   assert.equal(loadConfig({ NODE_ENV: 'development' }).demoMode, false);
+  assert.equal(loadConfig({ NODE_ENV: 'production' }).demoMode, false);
 });
 
 test('fictional demo endpoint is absent unless local demo mode is explicitly enabled', async () => {
