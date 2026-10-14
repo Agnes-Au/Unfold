@@ -75,6 +75,8 @@
 .preview-foot .btn { flex: 0 0 auto; }
 .case-detail-heading { align-items: flex-start; }
 .case-detail-heading .chip-row { margin-top: .55rem; }
+/* TopicChips renders its own nested .chip-row; keep it level with the status and language chips. */
+.case-detail-heading .chip-row .chip-row { margin-top: 0; }
 .privacy-summary { margin: 0; }
 .case-context { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .9rem 1.5rem; }
 .case-context h2 { margin: 0 0 .3rem; }
@@ -157,6 +159,8 @@
   .sidebar-worker .badge { margin-left: auto; }
   .mobile-header, .mobile-nav { display: none; }
   .main { margin-left: 245px; padding: 2.2rem clamp(1.5rem,3vw,3rem) 3rem; }
+  /* No sidebar before sign-in, so the login/register card centres on the page. */
+  .app.signed-out .main { margin-left: 0; }
 }
 @media (max-width: 1050px) {
   .dashboard-panels { grid-template-columns: minmax(230px,.85fr) minmax(0,1.15fr); }

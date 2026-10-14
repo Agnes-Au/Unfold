@@ -42,7 +42,7 @@ function RequireVerified({ children }) {
 export default function App() {
   const { worker } = useAuth();
   return (
-    <div className="app">
+    <div className={worker ? 'app' : 'app signed-out'}>
       {worker && <Header />}
       <main className="main">
         <Routes>
