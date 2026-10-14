@@ -160,6 +160,11 @@ export function getFictionalDemoSession(): Promise<FictionalDemoSession> {
   return request<FictionalDemoSession>('/api/demo/session');
 }
 
+/** Start the shared demo over (Maya's original case and conversation) and return its session. */
+export function resetFictionalDemoSession(): Promise<FictionalDemoSession> {
+  return request<FictionalDemoSession>('/api/demo/reset', { method: 'POST', body: {} });
+}
+
 export function setCloudConsent(
   token: string,
   cloudOrg: boolean,

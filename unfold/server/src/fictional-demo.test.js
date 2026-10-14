@@ -189,3 +189,32 @@ test('a demo seeded with future-dated messages is reseeded and keeps its device 
     db.close();
   }
 });
+
+test('resetting the demo restores the original conversation and keeps the device token', async () => {
+  await withServer(TEST_CONFIG, async ({ db, baseUrl }) => {
+    const first = await request(baseUrl, '/api/demo/session');
+    const token = first.body.deviceToken;
+    await request(baseUrl, `/api/cases/${FICTIONAL_DEMO_CASE_ID}/messages`, {
+      method: 'POST',
+      token,
+      body: { text: 'a visitor message' },
+    });
+    await request(baseUrl, `/api/cases/${FICTIONAL_DEMO_CASE_ID}/withdraw`, { method: 'POST', token, body: {} });
+
+    const reset = await request(baseUrl, '/api/demo/reset', { method: 'POST', body: {} });
+    assert.equal(reset.status, 200);
+    assert.equal(reset.body.deviceToken, token);
+    assert.equal(reset.body.case.status, 'continued');
+    assert.equal(reset.body.entries.length, FIXTURE.notes.length);
+    const thread = await request(baseUrl, `/api/cases/${FICTIONAL_DEMO_CASE_ID}/messages`, { token });
+    assert.equal(thread.body.messages.length, FIXTURE.messages.length);
+    assert.equal(thread.body.messages.some((message) => message.text === 'a visitor message'), false);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM cases').get().n, 1);
+  });
+});
+
+test('demo reset is absent unless demo mode is enabled', async () => {
+  await withServer({ ...TEST_CONFIG, demoMode: false }, async ({ baseUrl }) => {
+    assert.equal((await request(baseUrl, '/api/demo/reset', { method: 'POST', body: {} })).status, 404);
+  });
+});

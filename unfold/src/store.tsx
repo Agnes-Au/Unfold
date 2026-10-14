@@ -12,6 +12,7 @@ import {
   getFictionalDemoSession,
   postCaseMessage,
   registerDevice,
+  resetFictionalDemoSession,
   setCloudConsent,
   syncEntries,
   toSyncPayload,
@@ -385,47 +386,25 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
         scopedUpdate((current) => ({ ...current, entries: current.entries.filter((entry) => entry.id !== id) }));
       },
+      // Always starts the demo over: the server rebuilds Maya's case and
+      // conversation (dropping messages anyone sent), and the stored demo
+      // notes on this device (added, edited or deleted) are discarded.
       enterDemo: async () => {
         if (demoLoadingRef.current) return false;
-        if (sessionGuard.capture()?.isDemo) {
-          setDemoError(null);
-          return true;
-        }
-        if (isDemo && exitPendingRef.current) {
-          const transition = ++transitionRef.current;
-          const transitionIsCurrent = () => transitionRef.current === transition;
-          exitPendingRef.current = false;
-          sessionGuard.activate(true);
-          setIsDemo(true);
-          try {
-            const active = await serializeStorage(async () => {
-              if (!transitionIsCurrent()) return false;
-              await AsyncStorage.setItem(FICTIONAL_DEMO_ACTIVE_KEY, '1');
-              return transitionIsCurrent();
-            });
-            return active && transitionIsCurrent();
-          } catch {
-            if (transitionIsCurrent()) {
-              exitPendingRef.current = false;
-              setDemoError('Could not safely cancel demo exit because local storage is unavailable. Your fictional session remains active.');
-            }
-            return false;
-          }
-        }
+        // Opening again also cancels an exit still in progress.
+        const cancelledExit = isDemo && exitPendingRef.current;
+        exitPendingRef.current = false;
         demoLoadingRef.current = true;
         const transition = ++transitionRef.current;
         const transitionIsCurrent = () => transitionRef.current === transition;
         setDemoLoading(true);
         setDemoError(null);
         try {
-          const session = await getFictionalDemoSession();
+          const session = await resetFictionalDemoSession();
           if (!transitionIsCurrent()) return false;
           const { messages } = await getCaseMessages(session.deviceToken, session.case.id);
           if (!transitionIsCurrent()) return false;
-          const stored = await serializeStorage(() => AsyncStorage.getItem(FICTIONAL_DEMO_STORAGE_KEY));
-          if (!transitionIsCurrent()) return false;
-          const previous = stored ? sanitize(JSON.parse(stored)) : null;
-          const next = buildFictionalDemoData(session, messages, previous);
+          const next = buildFictionalDemoData(session, messages, null);
           const activated = await serializeStorage(async () => {
             if (!transitionIsCurrent()) return false;
             await AsyncStorage.setItem(FICTIONAL_DEMO_STORAGE_KEY, JSON.stringify(next));
@@ -441,7 +420,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           return true;
         } catch {
           if (transitionIsCurrent()) {
-            setDemoError('The local demo server is unavailable or demo mode is disabled. Run ./start-all.sh, then retry; your personal records were not changed.');
+            if (cancelledExit) {
+              // The exit was interrupted; stay in the existing demo session.
+              sessionGuard.activate(true);
+              await serializeStorage(() => AsyncStorage.setItem(FICTIONAL_DEMO_ACTIVE_KEY, '1')).catch(() => undefined);
+            }
+            setDemoError('The demo server is unavailable or demo mode is disabled, so the demo could not be started. Your personal records were not changed.');
           }
           return false;
         } finally {

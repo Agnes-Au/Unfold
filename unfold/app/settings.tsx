@@ -79,6 +79,9 @@ export default function SettingsScreen() {
         label={store.demoLoading ? 'Opening fictional demo…' : 'Open Maya’s complete fictional student demo'}
         onPress={() => { void store.enterDemo().then((entered) => { if (entered) router.replace('/diary'); }); }}
       />
+      <T size={13} color={colors.muted} style={{ marginTop: 8 }}>
+        Opening the demo starts it fresh: messages sent and notes added in the demo are cleared, for everyone using it.
+      </T>
       {store.demoError ? <T size={14} color={colors.teal} style={{ marginTop: 8 }}>{store.demoError}</T> : null}
       <View style={{ height: 12 }} />
       {confirm ? (

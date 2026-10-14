@@ -143,6 +143,20 @@ export function ensureFictionalDemo(db) {
   insert();
 }
 
+/**
+ * Rebuild the demo conversation from the fixture: delete the demo device's
+ * cases and every message on them (including ones visitors sent), then
+ * reseed. The device, its token and the synced fixture notes are kept, so a
+ * reset doesn't reclassify Maya's notes.
+ */
+export function resetFictionalDemo(db) {
+  db.transaction(() => {
+    db.prepare('DELETE FROM messages WHERE case_id IN (SELECT id FROM cases WHERE device_id = ?)').run(FICTIONAL_DEMO_DEVICE_ID);
+    db.prepare('DELETE FROM cases WHERE device_id = ?').run(FICTIONAL_DEMO_DEVICE_ID);
+  })();
+  ensureFictionalDemo(db);
+}
+
 /** A one-purpose session response for the fictional-only student demo. */
 export function fictionalDemoSession(db) {
   const device = db.prepare('SELECT token FROM devices WHERE id = ?').get(FICTIONAL_DEMO_DEVICE_ID);
