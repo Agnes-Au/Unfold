@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { newDeviceToken } from './auth.js';
 import { seed } from './seed.js';
+import { purgeDeviceCloudData } from './purge.js';
 
 const FIXTURE = JSON.parse(
   readFileSync(new URL('../demo-edited.json', import.meta.url), 'utf8'),
@@ -16,6 +17,28 @@ function atOffset(now, daysAgo, time) {
   date.setUTCDate(date.getUTCDate() - daysAgo);
   date.setUTCHours(hour, minute, 0, 0);
   return date.toISOString();
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Whole days to move the authored timeline back so that nothing in it is in
+ * the future. A fixture authored with offsets past "now" (negative daysAgo, or
+ * a later time today) would otherwise sort ahead of every new message.
+ */
+function timelineShiftDays(now) {
+  const offsets = [
+    ...FIXTURE.notes.flatMap((note) => [
+      [note.daysAgo, note.time],
+      [note.eventDaysAgo ?? note.daysAgo, note.eventTime ?? note.time],
+    ]),
+    ...FIXTURE.messages.map((message) => [message.daysAgo, message.time]),
+    [FIXTURE.case.createdDaysAgo, FIXTURE.case.createdTime],
+    [FIXTURE.case.claimedDaysAgo, FIXTURE.case.claimedTime],
+    [FIXTURE.case.continuedDaysAgo, FIXTURE.case.continuedTime],
+  ];
+  const latest = Math.max(...offsets.map(([daysAgo, time]) => Date.parse(atOffset(now, daysAgo, time))));
+  return latest > now.getTime() ? Math.ceil((latest - now.getTime()) / DAY_MS) : 0;
 }
 
 function buildHistory(now) {
@@ -51,12 +74,22 @@ export function ensureFictionalDemo(db) {
   // Databases created before the demo had cloud organisation keep their device row.
   db.prepare('UPDATE devices SET cloud_org = 1 WHERE id = ? AND cloud_org = 0').run(FICTIONAL_DEMO_DEVICE_ID);
   const existingCase = db.prepare('SELECT * FROM cases WHERE id = ?').get(FICTIONAL_DEMO_CASE_ID);
-  if (existingCase) return;
+  if (existingCase) {
+    // Repair a demo seeded before timeline shifting: future-dated messages
+    // sort after every new one, hiding it. Reseed the demo device's case and
+    // synced notes; the device row and its token are kept.
+    const future = db
+      .prepare('SELECT COUNT(*) AS n FROM messages WHERE case_id = ? AND created_at > ?')
+      .get(FICTIONAL_DEMO_CASE_ID, new Date().toISOString()).n;
+    if (future === 0) return;
+    purgeDeviceCloudData(db, FICTIONAL_DEMO_DEVICE_ID);
+  }
 
   const worker = db.prepare('SELECT * FROM workers WHERE email = ?').get('demo.worker@unfold.local');
   if (!worker?.verified) throw new Error('The local demo worker must be verified before seeding the fictional case.');
 
-  const now = new Date();
+  const realNow = new Date();
+  const now = new Date(realNow.getTime() - timelineShiftDays(realNow) * DAY_MS);
   const history = buildHistory(now);
   const createdAt = atOffset(now, FIXTURE.case.createdDaysAgo, FIXTURE.case.createdTime);
   const claimedAt = atOffset(now, FIXTURE.case.claimedDaysAgo, FIXTURE.case.claimedTime);

@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { createApp } from './index.js';
 import { createDb } from './db.js';
 import { loadConfig } from './config.js';
-import { FICTIONAL_DEMO_CASE_ID, FICTIONAL_DEMO_DEVICE_ID } from './fictional-demo.js';
+import { ensureFictionalDemo, FICTIONAL_DEMO_CASE_ID, FICTIONAL_DEMO_DEVICE_ID } from './fictional-demo.js';
 import { newId, signWorkerToken } from './auth.js';
 
 const FIXTURE = JSON.parse(readFileSync(new URL('../demo-edited.json', import.meta.url), 'utf8'));
@@ -152,4 +152,40 @@ test('fictional demo endpoint is absent unless local demo mode is explicitly ena
     assert.equal(result.status, 404);
     assert.equal(result.body.error, 'not_found');
   });
+});
+
+test('fictional demo timeline is never in the future, so new messages sort last', async () => {
+  await withServer(TEST_CONFIG, async ({ db, baseUrl }) => {
+    const session = await request(baseUrl, '/api/demo/session');
+    const now = new Date().toISOString();
+    const future = db.prepare('SELECT COUNT(*) AS n FROM messages WHERE case_id = ? AND created_at > ?').get(FICTIONAL_DEMO_CASE_ID, now).n;
+    assert.equal(future, 0);
+    assert.ok(session.body.entries.every((entry) => entry.createdAt <= now && entry.eventAt <= now));
+
+    await request(baseUrl, `/api/cases/${FICTIONAL_DEMO_CASE_ID}/messages`, {
+      method: 'POST',
+      token: session.body.deviceToken,
+      body: { text: 'newest student message' },
+    });
+    const thread = await request(baseUrl, `/api/cases/${FICTIONAL_DEMO_CASE_ID}/messages`, { token: session.body.deviceToken });
+    assert.equal(thread.body.messages.at(-1).text, 'newest student message');
+  });
+});
+
+test('a demo seeded with future-dated messages is reseeded and keeps its device token', () => {
+  const db = createDb(':memory:');
+  try {
+    ensureFictionalDemo(db);
+    const token = db.prepare('SELECT token FROM devices WHERE id = ?').get(FICTIONAL_DEMO_DEVICE_ID).token;
+    db.prepare("UPDATE messages SET created_at = '2999-01-01T00:00:00.000Z' WHERE case_id = ?").run(FICTIONAL_DEMO_CASE_ID);
+
+    ensureFictionalDemo(db);
+
+    const future = db.prepare("SELECT COUNT(*) AS n FROM messages WHERE created_at > ?").get(new Date().toISOString()).n;
+    assert.equal(future, 0);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM messages WHERE case_id = ?').get(FICTIONAL_DEMO_CASE_ID).n, FIXTURE.messages.length);
+    assert.equal(db.prepare('SELECT token FROM devices WHERE id = ?').get(FICTIONAL_DEMO_DEVICE_ID).token, token);
+  } finally {
+    db.close();
+  }
 });

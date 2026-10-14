@@ -18,6 +18,19 @@ export function fictionalDemoEntries(session: FictionalDemoSession): Entry[] {
   }));
 }
 
+/**
+ * Keep a returning visitor's own notes, edits and deletions, but replace a
+ * stored fixture note whose recorded time changed on the server (the demo was
+ * reseeded, e.g. to move its timeline out of the future).
+ */
+function refreshFixtureEntries(stored: Entry[], fixture: Entry[]): Entry[] {
+  const byId = new Map(fixture.map((entry) => [entry.id, entry]));
+  return stored.map((entry) => {
+    const fresh = byId.get(entry.id);
+    return fresh && fresh.createdAt !== entry.createdAt ? fresh : entry;
+  });
+}
+
 export function buildFictionalDemoData(
   session: FictionalDemoSession,
   remoteMessages: CaseMessage[],
@@ -42,7 +55,7 @@ export function buildFictionalDemoData(
 
   return {
     onboarded: true,
-    entries: previous?.entries ?? fictionalDemoEntries(session),
+    entries: previous ? refreshFixtureEntries(previous.entries, fictionalDemoEntries(session)) : fictionalDemoEntries(session),
     cases: [...(previous?.cases ?? []).filter((existing) => existing.id !== item.id), item],
     messages: [...(previous?.messages ?? []).filter((message) => message.caseId !== item.id), ...messages],
     snoozeUntilCount: previous?.snoozeUntilCount ?? 0,

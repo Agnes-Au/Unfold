@@ -81,3 +81,19 @@ test('fictional student data stays separate from personal storage and remains co
   assert.equal(reopened.cases.length, 1);
   assert.deepEqual(reopened.messages.map((message) => message.id), ['worker-1', 'student-1', 'worker-2']);
 });
+
+test('a reseeded demo replaces stored fixture notes but keeps visitor notes and deletions', () => {
+  const session = demoSession();
+  const stored = buildFictionalDemoData(session, [], null);
+  const visitorNote = { ...stored.entries[0], id: 'visitor-note', createdAt: '2025-02-01T09:00:00.000Z' };
+  const previous = { ...stored, entries: [...stored.entries.slice(1), visitorNote] }; // first fixture note deleted
+
+  const reseeded = demoSession();
+  reseeded.entries = reseeded.entries.map((entry) => ({ ...entry, createdAt: '2024-12-01T12:00:00.000Z', eventAt: '2024-12-01T12:00:00.000Z' }));
+  const next = buildFictionalDemoData(reseeded, [], previous);
+
+  assert.equal(next.entries.some((entry) => entry.id === session.entries[0].id), false);
+  assert.ok(next.entries.some((entry) => entry.id === 'visitor-note'));
+  const moved = next.entries.find((entry) => entry.id === session.entries[1].id);
+  assert.equal(moved?.createdAt, '2024-12-01T12:00:00.000Z');
+});
