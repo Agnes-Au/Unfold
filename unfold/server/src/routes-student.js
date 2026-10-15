@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { newId, requireDevice } from './auth.js';
 import { isWaiting } from './sweeper.js';
 import { purgeDeviceCloudData } from './purge.js';
+import { orderThread } from './fictional-demo.js';
 import {
   classifyEntry,
   linkEntries,
@@ -563,7 +564,7 @@ export function studentRouter(db, config = {}) {
   router.get('/cases/:id/messages', (req, res) => {
     const row = ownedCase(req, res);
     if (!row) return;
-    const messages = stmts.messagesForCase.all(row.id).map((message) => ({
+    const messages = orderThread(stmts.messagesForCase.all(row.id)).map((message) => ({
       id: message.id,
       sender: message.sender,
       text: message.text,

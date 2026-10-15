@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { newId, requireWorker, requireVerifiedWorker } from './auth.js';
+import { orderThread } from './fictional-demo.js';
 
 /**
  * Worker-facing case routes (mounted at /api/worker).
@@ -275,10 +276,11 @@ export function workerRouter(db, config) {
     if (row.claimed_by !== req.worker.id) {
       return res.status(403).json({ error: 'not_your_case' });
     }
-    const messages = db
-      .prepare(`${MESSAGES_SELECT} WHERE m.case_id = ? ORDER BY m.created_at ASC, m.rowid ASC`)
-      .all(row.id)
-      .map(publicMessage);
+    const messages = orderThread(
+      db
+        .prepare(`${MESSAGES_SELECT} WHERE m.case_id = ? ORDER BY m.created_at ASC, m.rowid ASC`)
+        .all(row.id),
+    ).map(publicMessage);
     res.json({ messages });
   });
 

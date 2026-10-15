@@ -5,3 +5,5 @@
 # WorkBuddy test-run runtime artifacts (evidence/logs stay, runtime state does not)
 workbuddy/test-runs/*/env/*.db
 workbuddy/test-runs/*/env/*.pid
+unfold/.workbuddy-ai/*
+unfold/scripts/*

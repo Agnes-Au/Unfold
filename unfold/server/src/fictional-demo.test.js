@@ -9,6 +9,17 @@ import { newId, signWorkerToken } from './auth.js';
 
 const FIXTURE = JSON.parse(readFileSync(new URL('../demo-edited.json', import.meta.url), 'utf8'));
 
+/** The demo's authored times are Hong Kong wall-clock; render them the same way. */
+const hkDay = (iso) =>
+  new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Hong_Kong', dateStyle: 'short' }).format(new Date(iso));
+const hkTime = (iso) =>
+  new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Hong_Kong',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(new Date(iso));
+
 const TEST_CONFIG = {
   jwtSecret: 'fictional-demo-test-secret',
   geminiApiKey: '',
@@ -154,37 +165,70 @@ test('fictional demo endpoint is absent unless local demo mode is explicitly ena
   });
 });
 
-test('fictional demo timeline is never in the future, so new messages sort last', async () => {
+test('the demo is pinned to its authored calendar, and a new message still sorts last', async () => {
   await withServer(TEST_CONFIG, async ({ db, baseUrl }) => {
     const session = await request(baseUrl, '/api/demo/session');
-    const now = new Date().toISOString();
-    const future = db.prepare('SELECT COUNT(*) AS n FROM messages WHERE case_id = ? AND created_at > ?').get(FICTIONAL_DEMO_CASE_ID, now).n;
-    assert.equal(future, 0);
-    assert.ok(session.body.entries.every((entry) => entry.createdAt <= now && entry.eventAt <= now));
 
-    await request(baseUrl, `/api/cases/${FICTIONAL_DEMO_CASE_ID}/messages`, {
+    // Pinned, not relative: the first entry is written on 30 Sep and the
+    // journey runs to Halloween, whatever day the demo is opened.
+    const days = session.body.entries
+      .flatMap((entry) => [hkDay(entry.createdAt), hkDay(entry.eventAt)])
+      .sort();
+    assert.equal(days[0], '2026-09-30');
+    assert.equal(days.at(-1), '2026-10-31');
+
+    // The shared summary is sent at 18:34 on the day Maya first messages.
+    const before = await request(baseUrl, `/api/cases/${FICTIONAL_DEMO_CASE_ID}/messages`, {
+      token: session.body.deviceToken,
+    });
+    const firstStudent = before.body.messages.find((message) => message.sender === 'student');
+    assert.equal(hkTime(session.body.case.createdAt), '18:34');
+    assert.equal(hkDay(session.body.case.createdAt), hkDay(firstStudent.createdAt));
+    assert.equal(hkTime(firstStudent.createdAt), '18:50');
+
+    // The fixture itself runs past today, so a visitor's own message has to be
+    // ordered after the authored conversation rather than by its timestamp.
+    assert.ok(
+      db.prepare('SELECT COUNT(*) AS n FROM messages WHERE case_id = ? AND created_at > ?').get(
+        FICTIONAL_DEMO_CASE_ID,
+        new Date().toISOString(),
+      ).n > 0,
+    );
+    const posted = await request(baseUrl, `/api/cases/${FICTIONAL_DEMO_CASE_ID}/messages`, {
       method: 'POST',
       token: session.body.deviceToken,
       body: { text: 'newest student message' },
     });
+    assert.equal(posted.status, 201);
     const thread = await request(baseUrl, `/api/cases/${FICTIONAL_DEMO_CASE_ID}/messages`, { token: session.body.deviceToken });
+    assert.equal(thread.body.messages.length, FIXTURE.messages.length + 1);
     assert.equal(thread.body.messages.at(-1).text, 'newest student message');
+
+    // Re-entry keeps the same calendar and does not reseed the conversation.
+    const again = await request(baseUrl, '/api/demo/session');
+    assert.equal(again.body.case.createdAt, session.body.case.createdAt);
+    const reopened = await request(baseUrl, `/api/cases/${FICTIONAL_DEMO_CASE_ID}/messages`, { token: session.body.deviceToken });
+    assert.equal(reopened.body.messages.at(-1).text, 'newest student message');
   });
 });
 
-test('a demo seeded with future-dated messages is reseeded and keeps its device token', () => {
+test('a demo seeded on an older calendar is reseeded and keeps its device token', () => {
   const db = createDb(':memory:');
   try {
     ensureFictionalDemo(db);
     const token = db.prepare('SELECT token FROM devices WHERE id = ?').get(FICTIONAL_DEMO_DEVICE_ID).token;
-    db.prepare("UPDATE messages SET created_at = '2999-01-01T00:00:00.000Z' WHERE case_id = ?").run(FICTIONAL_DEMO_CASE_ID);
+    db.prepare("UPDATE cases SET created_at = '2026-09-20T02:00:00.000Z' WHERE id = ?").run(FICTIONAL_DEMO_CASE_ID);
+    db.prepare("UPDATE messages SET created_at = '2026-09-20T02:00:00.000Z' WHERE case_id = ?").run(FICTIONAL_DEMO_CASE_ID);
 
     ensureFictionalDemo(db);
 
-    const future = db.prepare("SELECT COUNT(*) AS n FROM messages WHERE created_at > ?").get(new Date().toISOString()).n;
-    assert.equal(future, 0);
+    assert.equal(
+      db.prepare("SELECT COUNT(*) AS n FROM messages WHERE created_at = '2026-09-20T02:00:00.000Z'").get().n,
+      0,
+    );
     assert.equal(db.prepare('SELECT COUNT(*) AS n FROM messages WHERE case_id = ?').get(FICTIONAL_DEMO_CASE_ID).n, FIXTURE.messages.length);
     assert.equal(db.prepare('SELECT token FROM devices WHERE id = ?').get(FICTIONAL_DEMO_DEVICE_ID).token, token);
+    assert.notEqual(db.prepare('SELECT created_at FROM cases WHERE id = ?').get(FICTIONAL_DEMO_CASE_ID).created_at, '2026-09-20T02:00:00.000Z');
   } finally {
     db.close();
   }

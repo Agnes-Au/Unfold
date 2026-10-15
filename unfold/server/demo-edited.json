@@ -2,6 +2,7 @@
   "id": "demo-mv0ucpzz-wv",
   "name": "Maya (Edited)",
   "description": "Four weeks of diary notes and a social worker exchange, tracking Maya from overwhelm towards steadier ground.",
+  "anchorDate": "2026-10-09",
   "persona": {
     "name": "Maya",
     "context": "Maya is studying business at a Hong Kong university. She has two younger siblings, Aidan and Lily. Her parents are often away working, so she handles school, caregiving, chores, and a busy social life."
@@ -18,8 +19,8 @@
       "sleep",
       "friends"
     ],
-    "createdDaysAgo": 2,
-    "createdTime": "10:00",
+    "createdDaysAgo": 5,
+    "createdTime": "18:34",
     "claimedDaysAgo": 2,
     "claimedTime": "13:00",
     "continuedDaysAgo": 1,

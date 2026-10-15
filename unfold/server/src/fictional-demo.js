@@ -10,41 +10,45 @@ const FIXTURE = JSON.parse(
 export const FICTIONAL_DEMO_DEVICE_ID = 'dev_unfold_fictional_maya_v1';
 export const FICTIONAL_DEMO_CASE_ID = FIXTURE.case.id;
 
-function atOffset(now, daysAgo, time) {
-  const [hour, minute] = time.split(':').map(Number);
-  const date = new Date(now);
-  date.setUTCHours(0, 0, 0, 0);
-  date.setUTCDate(date.getUTCDate() - daysAgo);
-  date.setUTCHours(hour, minute, 0, 0);
-  return date.toISOString();
-}
-
-const DAY_MS = 24 * 60 * 60 * 1000;
+/**
+ * The demo's authored wall-clock times are Hong Kong time — the persona is a
+ * Hong Kong student — while the app renders every timestamp in the device's
+ * own zone. Building the instants as UTC instead showed 20:01 as 04:01.
+ */
+const DEMO_UTC_OFFSET_MINUTES = 8 * 60;
+const ANCHOR_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 /**
- * Whole days to move the authored timeline back so that nothing in it is in
- * the future. A fixture authored with offsets past "now" (negative daysAgo, or
- * a later time today) would otherwise sort ahead of every new message.
+ * The calendar day the fixture's `daysAgo` offsets count back from.
+ *
+ * `daysAgo` alone resolves against "now", so the demo slid forward every time
+ * it was seeded. The fixture's `anchorDate` pins the journey to one fixed
+ * calendar, so it always renders the same dates. Without one it falls back to
+ * today in the demo's timezone.
  */
-function timelineShiftDays(now) {
-  const offsets = [
-    ...FIXTURE.notes.flatMap((note) => [
-      [note.daysAgo, note.time],
-      [note.eventDaysAgo ?? note.daysAgo, note.eventTime ?? note.time],
-    ]),
-    ...FIXTURE.messages.map((message) => [message.daysAgo, message.time]),
-    [FIXTURE.case.createdDaysAgo, FIXTURE.case.createdTime],
-    [FIXTURE.case.claimedDaysAgo, FIXTURE.case.claimedTime],
-    [FIXTURE.case.continuedDaysAgo, FIXTURE.case.continuedTime],
-  ];
-  const latest = Math.max(...offsets.map(([daysAgo, time]) => Date.parse(atOffset(now, daysAgo, time))));
-  return latest > now.getTime() ? Math.ceil((latest - now.getTime()) / DAY_MS) : 0;
+function fixtureAnchor(now = new Date()) {
+  if (ANCHOR_DATE.test(FIXTURE.anchorDate ?? '')) return FIXTURE.anchorDate;
+  return new Date(now.getTime() + DEMO_UTC_OFFSET_MINUTES * 60_000).toISOString().slice(0, 10);
 }
 
-function buildHistory(now) {
+/** The UTC instant of a fixture wall-clock time `daysAgo` before the anchor. */
+function atOffset(anchor, daysAgo, time) {
+  const [hour, minute] = time.split(':').map(Number);
+  const [year, month, day] = anchor.split('-').map(Number);
+  const wallClock = Date.UTC(
+    year,
+    month - 1,
+    day - daysAgo,
+    Number.isFinite(hour) ? hour : 0,
+    Number.isFinite(minute) ? minute : 0,
+  );
+  return new Date(wallClock - DEMO_UTC_OFFSET_MINUTES * 60_000).toISOString();
+}
+
+function buildHistory(anchor) {
   const entries = FIXTURE.notes.map((note) => {
-    const recordedAt = atOffset(now, note.daysAgo, note.time);
-    const eventAt = atOffset(now, note.eventDaysAgo ?? note.daysAgo, note.eventTime ?? note.time);
+    const recordedAt = atOffset(anchor, note.daysAgo, note.time);
+    const eventAt = atOffset(anchor, note.eventDaysAgo ?? note.daysAgo, note.eventTime ?? note.time);
     return { id: note.id, createdAt: recordedAt, eventAt, text: note.text };
   });
   const excerpts = entries.map((entry) => ({
@@ -55,9 +59,24 @@ function buildHistory(now) {
   }));
   const messages = FIXTURE.messages.map((message) => ({
     ...message,
-    createdAt: atOffset(now, message.daysAgo, message.time),
+    createdAt: atOffset(anchor, message.daysAgo, message.time),
   }));
   return { entries, excerpts, messages };
+}
+
+/** The authored conversation's ids; anything else was added after seeding. */
+const AUTHORED_MESSAGE_IDS = new Set(FIXTURE.messages.map((message) => message.id));
+
+/**
+ * Put the authored conversation first and anything added since — a visitor's
+ * own message or a live worker reply — after it, so a new message reads at the
+ * bottom of the demo even though the fixture's own dates run past today.
+ * Non-demo cases carry no authored ids, so their order is unchanged.
+ */
+export function orderThread(messages) {
+  const authored = messages.filter((message) => AUTHORED_MESSAGE_IDS.has(message.id));
+  const added = messages.filter((message) => !AUTHORED_MESSAGE_IDS.has(message.id));
+  return [...authored, ...added];
 }
 
 /**
@@ -73,27 +92,23 @@ export function ensureFictionalDemo(db) {
   seed(db);
   // Databases created before the demo had cloud organisation keep their device row.
   db.prepare('UPDATE devices SET cloud_org = 1 WHERE id = ? AND cloud_org = 0').run(FICTIONAL_DEMO_DEVICE_ID);
-  const existingCase = db.prepare('SELECT * FROM cases WHERE id = ?').get(FICTIONAL_DEMO_CASE_ID);
+  const anchor = fixtureAnchor();
+  const createdAt = atOffset(anchor, FIXTURE.case.createdDaysAgo, FIXTURE.case.createdTime);
+  const existingCase = db.prepare('SELECT created_at FROM cases WHERE id = ?').get(FICTIONAL_DEMO_CASE_ID);
   if (existingCase) {
-    // Repair a demo seeded before timeline shifting: future-dated messages
-    // sort after every new one, hiding it. Reseed the demo device's case and
-    // synced notes; the device row and its token are kept.
-    const future = db
-      .prepare('SELECT COUNT(*) AS n FROM messages WHERE case_id = ? AND created_at > ?')
-      .get(FICTIONAL_DEMO_CASE_ID, new Date().toISOString()).n;
-    if (future === 0) return;
+    // Reseed only when the authored calendar changed (a new anchor, say), so a
+    // visitor's replies and withdrawals survive every other entry. The device
+    // row and its token are always kept.
+    if (existingCase.created_at === createdAt) return;
     purgeDeviceCloudData(db, FICTIONAL_DEMO_DEVICE_ID);
   }
 
   const worker = db.prepare('SELECT * FROM workers WHERE email = ?').get('demo.worker@unfold.local');
   if (!worker?.verified) throw new Error('The local demo worker must be verified before seeding the fictional case.');
 
-  const realNow = new Date();
-  const now = new Date(realNow.getTime() - timelineShiftDays(realNow) * DAY_MS);
-  const history = buildHistory(now);
-  const createdAt = atOffset(now, FIXTURE.case.createdDaysAgo, FIXTURE.case.createdTime);
-  const claimedAt = atOffset(now, FIXTURE.case.claimedDaysAgo, FIXTURE.case.claimedTime);
-  const continuedAt = atOffset(now, FIXTURE.case.continuedDaysAgo, FIXTURE.case.continuedTime);
+  const history = buildHistory(anchor);
+  const claimedAt = atOffset(anchor, FIXTURE.case.claimedDaysAgo, FIXTURE.case.claimedTime);
+  const continuedAt = atOffset(anchor, FIXTURE.case.continuedDaysAgo, FIXTURE.case.continuedTime);
   const token = newDeviceToken();
 
   const insert = db.transaction(() => {
