@@ -241,7 +241,7 @@ export default function CaseScreen() {
     return (
       <Screen scroll footer={<StudentNav active="shared" />}>
         <Back label="Home" href="/" />
-        <T weight="extrabold" size={30}>Shared summary</T>
+        <T weight="extrabold" size={30}>Your social worker</T>
         <T size={17} weight="semibold" style={{ marginTop: 16 }}>Nothing is shared right now.</T>
         <T size={16} color={colors.muted} style={{ marginTop: 8 }}>
           You can keep recording privately.
@@ -303,7 +303,7 @@ export default function CaseScreen() {
       {/* Reserves the floating Home pill's height so the heading clears it. */}
       <View style={{ height: 44 }} />
       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8, zIndex: 1 }}>
-        <T weight="extrabold" size={30} style={{ flex: 1 }}>Shared summary</T>
+        <T weight="extrabold" size={30} style={{ flex: 1 }}>Your social worker</T>
         {canRematch ? (
           <Pressable
             accessibilityRole="button"

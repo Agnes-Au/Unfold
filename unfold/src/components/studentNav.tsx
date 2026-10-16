@@ -41,18 +41,16 @@ function TabIcon({ id, color, size = 24 }: { id: StudentNavTab; color: string; s
         </>
       ) : null}
       {id === 'ask' ? (
+        <>
+          <Circle cx="10.5" cy="10.5" r="5.5" {...stroke} />
+          <Path d="M14.5 14.5 19.5 19.5" {...stroke} />
+        </>
+      ) : null}
+      {id === 'shared' ? (
         <Path
           d="M7.5 4h9A2.5 2.5 0 0 1 19 6.5v7a2.5 2.5 0 0 1-2.5 2.5H11l-3.5 3.5V16A2.5 2.5 0 0 1 5 13.5v-7A2.5 2.5 0 0 1 7.5 4Z"
           {...stroke}
         />
-      ) : null}
-      {id === 'shared' ? (
-        <>
-          <Circle cx="9" cy="8.5" r="3" {...stroke} />
-          <Path d="M3.5 19a5.5 5.5 0 0 1 11 0" {...stroke} />
-          <Path d="M15.5 5.8a3 3 0 0 1 0 5.4" {...stroke} />
-          <Path d="M17 14.2a5.5 5.5 0 0 1 3.5 4.8" {...stroke} />
-        </>
       ) : null}
     </Svg>
   );

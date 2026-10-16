@@ -666,7 +666,10 @@ export async function ask({ question, entries }) {
           'Respond with ONLY a JSON object of exactly this shape: ' +
           '{ "found": boolean, "text": string, "hits": [{ "entryId": string, "dateLabel": string, "quote": string }] }. ' +
           'Rules: every quote must be copied VERBATIM from the note with that entryId. ' +
-          'When several notes are relevant, include several hits arranged by date ascending and weave them into text by date. ' +
+          'When several notes are relevant, include several hits arranged by date ascending. ' +
+          'Keep text concise: at most 3 short sentences, however many hits there are. The quotes are shown to the reader ' +
+          'separately, so do not repeat them or walk through each note; summarise the overall answer or pattern, ' +
+          'mentioning dates only where the change over time matters. ' +
           'If the notes do not contain the answer, set found to false, return an empty hits array, and honestly say nothing was found. ' +
           'Never invent content. No other keys or prose.',
         user: `Question: """${String(question ?? '')}"""\n\nNotes:\n${described || '(no notes available)'}`,
