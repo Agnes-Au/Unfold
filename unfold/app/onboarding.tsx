@@ -13,7 +13,7 @@ const STEPS = [
   },
   {
     title: 'It stays on your phone',
-    body: 'Your recording is sent to ElevenLabs only to turn it into text. The recording and the full transcript are saved on this device. You can delete them whenever you want.',
+    body: '',
   },
   {
     title: 'You choose what is shared',
@@ -63,9 +63,11 @@ export default function OnboardingScreen() {
         <T weight="extrabold" size={30} center>
           {page.title}
         </T>
-        <T size={16} color={colors.muted} center style={{ marginTop: 12 }}>
-          {page.body}
-        </T>
+        {page.body ? (
+          <T size={16} color={colors.muted} center style={{ marginTop: 12 }}>
+            {page.body}
+          </T>
+        ) : null}
         <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 8, marginTop: 28 }}>
           {STEPS.map((item, index) => (
             <View
@@ -102,7 +104,7 @@ export default function OnboardingScreen() {
               {checked ? <CheckIcon /> : null}
             </View>
             <View style={{ flex: 1 }}>
-              <T size={15}>I understand my recordings are transcribed by ElevenLabs and saved on this phone, and a summary is shared only if I approve it.</T>
+              <T size={15}>I understand my recordings are saved on this phone, and a summary is shared only if I approve it.</T>
             </View>
           </Pressable>
         ) : null}
