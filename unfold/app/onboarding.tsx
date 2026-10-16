@@ -40,7 +40,20 @@ export default function OnboardingScreen() {
   return (
     <Screen
       footer={
-        <Button label={step === 2 ? 'Start' : 'Next'} onPress={next} disabled={step === 2 && !checked} />
+        <View style={{ gap: 10 }}>
+          <Button label={step === 2 ? 'Start' : 'Next'} onPress={next} disabled={step === 2 && !checked} />
+          <Button
+            tone="secondary"
+            label={store.demoLoading ? 'Opening fictional demo…' : 'Try Maya’s fictional demo'}
+            disabled={store.demoLoading}
+            onPress={() => { void store.enterDemo().then((entered) => { if (entered) router.replace('/diary'); }); }}
+          />
+          {store.demoError ? (
+            <T size={14} color={colors.teal} center>
+              {store.demoError}
+            </T>
+          ) : null}
+        </View>
       }
     >
       <View style={{ flex: 1, paddingHorizontal: 24, justifyContent: 'center' }}>
