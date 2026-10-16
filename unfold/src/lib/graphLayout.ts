@@ -10,6 +10,14 @@ const GRAVITY = 0.014;
 const DAMPING = 0.6;
 const MAX_SPEED = 24;
 const MAX_FIT_SCALE = 1.8;
+/**
+ * The settled graph is never squeezed below this. Fitting to the canvas made the
+ * layout scale depend on the window: the same 35 notes settled at 1.0 on a phone
+ * and 1.8 on a desktop, so the links came out nearly half the length while the
+ * node radii — fixed pixels — did not change. Below the floor the graph holds its
+ * link length and overflows the canvas instead, which pan and zoom cover.
+ */
+const MIN_FIT_SCALE = 1.5;
 /** Room for labels: they sit under each node and extend sideways. */
 const PAD = { x: 56, top: 28, bottom: 44 };
 
@@ -102,10 +110,13 @@ export function layoutGraph(
   const maxY = Math.max(...y);
   const innerWidth = Math.max(1, width - PAD.x * 2);
   const innerHeight = Math.max(1, height - PAD.top - PAD.bottom);
-  const scale = Math.min(
-    MAX_FIT_SCALE,
-    innerWidth / Math.max(1, maxX - minX),
-    innerHeight / Math.max(1, maxY - minY),
+  const scale = Math.max(
+    MIN_FIT_SCALE,
+    Math.min(
+      MAX_FIT_SCALE,
+      innerWidth / Math.max(1, maxX - minX),
+      innerHeight / Math.max(1, maxY - minY),
+    ),
   );
   const offsetX = PAD.x + innerWidth / 2 - ((minX + maxX) / 2) * scale;
   const offsetY = PAD.top + innerHeight / 2 - ((minY + maxY) / 2) * scale;
