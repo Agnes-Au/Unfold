@@ -10,7 +10,7 @@ const links = [
   { source: 'n4', target: 'topic:b' },
 ];
 
-test('graph layout is deterministic and keeps every node on the canvas', () => {
+test('graph layout is deterministic and fits a canvas large enough for it', () => {
   const first = layoutGraph(nodes, links, 900, 420);
   assert.deepEqual(layoutGraph(nodes, links, 900, 420), first);
   for (const node of nodes) {
@@ -30,6 +30,17 @@ test('graph layout pulls linked notes closer to their topic than to another topi
 test('graph layout ignores links to unknown nodes and handles an empty graph', () => {
   assert.deepEqual(layoutGraph([], links, 900, 420), {});
   assert.equal(Object.keys(layoutGraph([{ id: 'only' }], links, 900, 420)).length, 1);
+});
+
+test('a canvas too small for the graph lets it overflow instead of shrinking the links', () => {
+  const width = 140;
+  const height = 200;
+  const points = layoutGraph(nodes, links, width, height);
+  const xs = Object.values(points).map((point) => point.x);
+  // Shrinking to fit this canvas left the links barely longer than the node dots,
+  // which stay a fixed size. The graph now holds its own scale and spills out.
+  assert.ok(Math.max(...xs) - Math.min(...xs) > width, 'the graph is wider than the canvas');
+  assert.ok(Math.abs((Math.max(...xs) + Math.min(...xs)) / 2 - width / 2) < 1, 'and stays centred');
 });
 
 test('dragging a node pulls its linked neighbours, and release settles everything back to rest', () => {

@@ -1,6 +1,6 @@
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Animated, Easing, Pressable, View } from 'react-native';
+import { Animated, Easing, Pressable, ScrollView, View } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { StudentNav } from '../src/components/studentNav';
 import { Back, Button, ButtonRow, Field, Notice, Screen, T } from '../src/components/ui';
@@ -180,6 +180,35 @@ function Composer({ value, onChangeText, onSend }: { value: string; onChangeText
   );
 }
 
+/** Jumps the thread to the newest message; the thread itself still opens at the top. */
+function ScrollToLatest({ onPress }: { onPress: () => void }) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Scroll to the latest messages"
+      hitSlop={8}
+      onPress={onPress}
+      style={({ pressed }) => ({
+        alignSelf: 'flex-start',
+        width: 34,
+        height: 34,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 17,
+        borderWidth: 1,
+        borderColor: colors.line,
+        backgroundColor: colors.card,
+        boxShadow: '0 6px 18px rgba(23, 48, 71, 0.12)',
+        opacity: pressed ? 0.7 : 1,
+      })}
+    >
+      <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+        <Path d="M12 5v13M6 12l6 6 6-6" stroke={colors.tealDark} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+      </Svg>
+    </Pressable>
+  );
+}
+
 export default function CaseScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const store = useStore();
@@ -187,8 +216,10 @@ export default function CaseScreen() {
   const [text, setText] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const [navGone, setNavGone] = useState(false);
+  const scrollRef = useRef<ScrollView>(null);
   const messages = item ? store.messagesFor(item.id) : [];
   const remote = Boolean(item?.remote && store.deviceToken && (store.cloudOrg || store.isDemo));
+  const scrollToLatest = () => scrollRef.current?.scrollToEnd({ animated: true });
 
   // Live status/messages from the server while a remote case is open.
   useEffect(() => {
@@ -243,18 +274,25 @@ export default function CaseScreen() {
   const send = () => {
     store.sendMessage(item.id, 'student', text);
     setText('');
+    // The new bubble only reaches the DOM after this handler returns.
+    requestAnimationFrame(scrollToLatest);
   };
 
   return (
     <Screen
       scroll
       keyboard
+      scrollRef={scrollRef}
+      overlay={<Back label="Home" href="/" pill />}
       footer={
         composing || !navGone ? (
           <View pointerEvents="box-none">
             {composing ? (
               <RiseIn delay={120}>
-                <Composer value={text} onChangeText={setText} onSend={send} />
+                <View style={{ gap: 10 }}>
+                  <ScrollToLatest onPress={scrollToLatest} />
+                  <Composer value={text} onChangeText={setText} onSend={send} />
+                </View>
               </RiseIn>
             ) : null}
             {navGone ? null : <NavExit onDone={() => setNavGone(true)} />}
@@ -262,7 +300,8 @@ export default function CaseScreen() {
         ) : undefined
       }
     >
-      <Back label="Home" href="/" />
+      {/* Reserves the floating Home pill's height so the heading clears it. */}
+      <View style={{ height: 44 }} />
       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8, zIndex: 1 }}>
         <T weight="extrabold" size={30} style={{ flex: 1 }}>Shared summary</T>
         {canRematch ? (

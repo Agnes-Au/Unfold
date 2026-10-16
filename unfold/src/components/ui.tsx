@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { Children, createContext, useContext, useState, type ReactNode } from 'react';
+import { Children, createContext, useContext, useState, type ReactNode, type RefObject } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -77,6 +77,8 @@ export function Screen({
   keyboard,
   decor = false,
   wide = false,
+  overlay,
+  scrollRef,
 }: {
   children: ReactNode;
   footer?: ReactNode;
@@ -85,6 +87,10 @@ export function Screen({
   decor?: boolean;
   /** Opt in only for screens whose layout genuinely needs a landscape canvas. */
   wide?: boolean;
+  /** Floats over the body and under the footer, for controls that must survive scrolling. */
+  overlay?: ReactNode;
+  /** The body's ScrollView, so a screen can drive it — e.g. jump to the newest message. */
+  scrollRef?: RefObject<ScrollView | null>;
 }) {
   const insets = useSafeAreaInsets();
   // The footer floats over the body, so reserve its measured height at the end of the content.
@@ -92,6 +98,7 @@ export function Screen({
   const reserved = footer ? footerHeight : 0;
   const body = scroll ? (
     <ScrollView
+      ref={scrollRef}
       contentContainerStyle={[styles.scroll, reserved > 0 && { paddingBottom: reserved + 8 }]}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
@@ -111,6 +118,11 @@ export function Screen({
       {decor ? <View pointerEvents="none" style={styles.waveTop} /> : null}
       {decor ? <View pointerEvents="none" style={styles.sun} /> : null}
       {body}
+      {overlay ? (
+        <View pointerEvents="box-none" style={styles.overlay}>
+          {overlay}
+        </View>
+      ) : null}
       {footer ? (
         <View
           pointerEvents="box-none"
@@ -139,7 +151,16 @@ export function Screen({
   );
 }
 
-export function Back({ label = 'Back', href }: { label?: string; href?: '/' | '/diary' | '/privacy' }) {
+export function Back({
+  label = 'Back',
+  href,
+  pill = false,
+}: {
+  label?: string;
+  href?: '/' | '/diary' | '/privacy';
+  /** Raised and rounded, for the floating overlay where the page scrolls beneath it. */
+  pill?: boolean;
+}) {
   const router = useRouter();
   return (
     <Pressable
@@ -150,7 +171,7 @@ export function Back({ label = 'Back', href }: { label?: string; href?: '/' | '/
         else if (router.canGoBack()) router.back();
         else router.replace('/');
       }}
-      style={styles.back}
+      style={[styles.back, pill && styles.backPill]}
     >
       <T weight="semibold" size={15} color={colors.teal}>
         {`‹  ${label}`}
@@ -372,6 +393,16 @@ const styles = StyleSheet.create({
     paddingBottom: 18,
     gap: 10,
   },
+  // Matches the scroll body's padding, so an overlay control lines up with the content.
+  overlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    paddingHorizontal: 24,
+    paddingTop: 8,
+  },
   blobMint: {
     position: 'absolute',
     width: 220,
@@ -419,6 +450,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8DCCF',
   },
   back: { alignSelf: 'flex-start', paddingVertical: 4, marginBottom: 8 },
+  backPill: {
+    paddingHorizontal: 14,
+    paddingVertical: 9,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: colors.card,
+    boxShadow: '0 10px 24px rgba(23, 48, 71, 0.14)',
+  },
   button: {
     minHeight: 54,
     borderRadius: 16,
