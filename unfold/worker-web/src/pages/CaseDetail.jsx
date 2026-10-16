@@ -186,6 +186,15 @@ export default function CaseDetail() {
   const [selectedTopic, setSelectedTopic] = useState('');
   const [selectedEventId, setSelectedEventId] = useState(null);
   const requestVersion = useRef(0);
+  const threadRef = useRef(null);
+
+  // The most recent message is what a worker needs first, so pin the thread to
+  // its bottom whenever the conversation or the open tab changes.
+  const messageCount = messages?.length ?? 0;
+  useEffect(() => {
+    const thread = threadRef.current;
+    if (thread) thread.scrollTop = thread.scrollHeight;
+  }, [messageCount, activeTab]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -403,18 +412,20 @@ export default function CaseDetail() {
           <section className="card conversation" aria-labelledby="messages-heading">
             <h2 id="messages-heading">Authorized case messages</h2>
             <p className="muted small">Messages shown here are available only while this case remains assigned to you and shared by the student.</p>
-            {messages.length === 0 ? (
-              <p className="muted">No messages yet. Your first response will appear here.</p>
-            ) : (
-              <ul className="thread">
-                {messages.map((message, index) => (
-                  <li key={message.id ?? `message-${index}`} className={`bubble bubble-${message.sender}`}>
-                    <div className="bubble-meta">{senderLabel(message, worker)} · {formatDateTime(message.created_at)}</div>
-                    <div className="bubble-text">{message.text}</div>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <div className="thread-scroll" ref={threadRef}>
+              {messages.length === 0 ? (
+                <p className="muted">No messages yet. Your first response will appear here.</p>
+              ) : (
+                <ul className="thread">
+                  {messages.map((message, index) => (
+                    <li key={message.id ?? `message-${index}`} className={`bubble bubble-${message.sender}`}>
+                      <div className="bubble-meta">{senderLabel(message, worker)} · {formatDateTime(message.created_at)}</div>
+                      <div className="bubble-text">{message.text}</div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
             <form className="composer" onSubmit={send}>
               {!canRespond && <p className="muted small">Your response has been sent. You can reply again when the student continues the conversation.</p>}
               {sendError && <div className="alert alert-error" role="alert">{sendError}</div>}
